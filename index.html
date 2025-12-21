@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mecano Type Test</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="desk">
+        <div class="typewriter">
+            <div class="return-lever"></div>
+            <div class="roller-section">
+                <div class="knob left"></div>
+                <div class="roller"></div>
+                <div class="knob right"></div>
+            </div>
+            
+            <div class="paper-guide">
+                <div id="game-area" class="paper-sheet">
+                    <div id="words" class="words">
+                    </div>
+                </div>
+            </div>
+
+            <div class="machine-body">
+                <div class="typebars-semicircle">
+                    <div class="typebars-inner"></div>
+                </div>
+                
+                <div class="brand-plate">ROYAL</div>
+                
+                <div class="controls-row">
+                    <div class="keyboard-area">
+                        <button id="numbers-btn" class="mode-btn" title="Números"><i class="fas fa-calculator"></i></button>
+                        <button id="uppercase-btn" class="mode-btn" title="Mayúsculas"><i class="fas fa-font"></i></button>
+                        <button id="symbols-btn" class="mode-btn" title="Símbolos"><i class="fas fa-at"></i></button>
+                        <button id="sudden-death-btn" class="mode-btn" title="Muerte Súbita"><i class="fas fa-skull"></i></button>
+                    </div>
+                    <div class="keyboard-area">
+                        <button id="sound-btn" class="mode-btn" title="Sonido"><i class="fas fa-volume-mute"></i></button>
+                        <button id="stats-btn" class="mode-btn" title="Estadísticas"><i class="fas fa-chart-bar"></i></button>
+                        <button id="settings-btn" class="mode-btn" title="Ajustes"><i class="fas fa-cog"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="stats" class="sticky-note hidden">
+            <div class="pin"></div>
+            <h3>RESULTADOS</h3>
+            <div class="stat-row">
+                <div class="stat">
+                    <div class="val" id="wpm">0</div>
+                    <div class="label">WPM</div>
+                </div>
+                <div class="stat">
+                    <div class="val" id="acc">0%</div>
+                    <div class="label">PRECISIÓN</div>
+                </div>
+            </div>
+            <div class="stat-row">
+                <div class="stat">
+                    <div class="val" id="errors">0</div>
+                    <div class="label">ERRORES</div>
+                </div>
+            </div>
+            <div class="stat wide">
+                <div class="label">Teclas débiles:</div>
+                <div class="val" id="weak-keys">-</div>
+            </div>
+        </div>
+
+        <div id="restart-note" class="sticky-note hidden restart-note">
+            <div class="pin"></div>
+            <div id="restart-button" tabindex="0">
+                <i class="fas fa-redo"></i> REINICIAR
+            </div>
+        </div>
+    </div>
+
+    <div id="stats-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Estadísticas Históricas</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="table-container">
+                <table id="global-stats-table">
+                    <thead>
+                        <tr>
+                            <th class="sortable" data-sort="char">Letra <i class="fas fa-sort"></i></th>
+                            <th class="sortable" data-sort="total">Total <i class="fas fa-sort"></i></th>
+                            <th class="sortable" data-sort="errors">Fallos <i class="fas fa-sort"></i></th>
+                            <th class="sortable" data-sort="rate">% Error <i class="fas fa-sort"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                <button id="reset-stats-btn" class="danger-btn">Resetear Historial</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="settings-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Ajustes</h2>
+                <span class="close-modal" id="close-settings">&times;</span>
+            </div>
+            <div class="settings-container">
+                <div class="setting-group">
+                    <label>Idioma:</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" data-lang="es">Español</button>
+                        <button class="toggle-btn" data-lang="en">Inglés</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label>Palabras:</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn" data-count="10">10</button>
+                        <button class="toggle-btn active" data-count="25">25</button>
+                        <button class="toggle-btn" data-count="50">50</button>
+                        <button class="toggle-btn" data-count="100">100</button>
+                        <button class="toggle-btn" data-count="infinite">Infinito</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label>Modo de Generación:</label>
+                    <div class="toggle-group">
+                        <button class="toggle-btn active" data-mode="random">Aleatorio</button>
+                        <button class="toggle-btn" data-mode="learning">Aprendizaje</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="text" id="mobile-input" style="opacity: 0; position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: -1;" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false">
+
+    <script src="script.js"></script>
+</body>
+</html>
