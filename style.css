@@ -1,15 +1,12 @@
+
 @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap');
 /* ===== NAVBAR ===== */
 .header {
   width: 100%;
   background-color: #111;
   position: relative;   
-  height: 60px;
-  
-  
+  height: 60px;  
 }
-
-
 .nav-container {
   max-width: 1100px;
   padding: 20px 20px;
@@ -46,6 +43,9 @@
 .nav-links a:hover {
   color: #00ffcc;
 }
+
+﻿@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&display=swap');
+
 
 :root {
     --bg-color: #8d6e63; 
@@ -959,4 +959,34 @@ th.sortable.desc i::before {
 .toggle-btn.active {
     background: #263238;
     color: #fff;
+}
+
+/* Zen Mode */
+body.zen-mode .words {
+    color: var(--ink-color);
+}
+
+body.zen-mode .letter {
+    color: var(--ink-color);
+    border-bottom: none;
+}
+
+body.zen-mode .letter.current {
+    background-color: transparent;
+    border-bottom: 2px solid var(--ink-color);
+}
+
+.zen-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: var(--ink-color);
+    animation: blink 1s infinite;
+    vertical-align: middle;
+    margin-left: 1px;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
 }
