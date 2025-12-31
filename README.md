@@ -4,6 +4,16 @@ Mecano Type Test is a web-based typing test application designed to measure and 
 
 **Live Demo:** [https://jorgegarcia33.github.io/MecanoTypeTest/](https://jorgegarcia33.github.io/MecanoTypeTest/)
 
+<div align="center">
+
+[![GitHub stars](https://img.shields.io/github/stars/jorgegarcia33/MecanoTypeTest?logo=github)](https://github.com/jorgegarcia33/MecanoTypeTest/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/jorgegarcia33/MecanoTypeTest?color=blue)](https://github.com/jorgegarcia33/MecanoTypeTest/network/members)
+[![Contributors](https://img.shields.io/github/contributors/jorgegarcia33/MecanoTypeTest)](https://github.com/jorgegarcia33/MecanoTypeTest/graphs/contributors)
+[![Issues closed](https://img.shields.io/github/issues-closed/jorgegarcia33/MecanoTypeTest?color=orange)](https://github.com/jorgegarcia33/MecanoTypeTest/issues)
+[![PRs closed](https://img.shields.io/github/issues-pr-closed/jorgegarcia33/MecanoTypeTest?color=yellow)](https://github.com/jorgegarcia33/MecanoTypeTest/pulls)
+
+</div>
+
 ## Features
 
 - **Multiple Languages**: Support for tests in Spanish and English.
