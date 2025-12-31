@@ -92,6 +92,16 @@ body.dark-mode .sticky-note { background: #332f1a; color: #eee; border-color: #4
 body.dark-mode .word { color: #888; }
 body.dark-mode .letter.correct { color: #fff; }
 
+/* Navbar Contrast in Dark Mode */
+body.dark-mode .logo,
+body.dark-mode .nav-links a {
+    color: #ccc;
+}
+
+body.dark-mode .nav-links a:hover {
+    color: var(--accent-gold);
+}
+
 /* Dark Mode Buttons Contrast */
 body.dark-mode .toggle-btn {
     background: #2a2a2a;
