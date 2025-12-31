@@ -5,6 +5,7 @@ const storedCount = localStorage.getItem('mecano_word_count');
 let wordCount = (storedCount === 'infinite') ? 'infinite' : (parseInt(storedCount) || 25);
 let currentLanguage = localStorage.getItem('mecano_language') || 'en';
 let generationMode = localStorage.getItem('mecano_generation_mode') || 'random';
+let zenModeEnabled = localStorage.getItem('mecano_zen_mode') === 'true';
 
 const gameArea = document.getElementById('game-area');
 const wordsContainer = document.getElementById('words');
@@ -271,12 +272,22 @@ function initGame(tearPaper = true) {
     gameArea.style.alignItems = 'stretch';
     document.body.classList.remove('focus-mode');
 
-    currentWords = generateWords();
-    renderWords();
+    if (zenModeEnabled) {
+        document.body.classList.add('zen-mode');
+        const cursor = document.createElement('span');
+        cursor.className = 'zen-cursor';
+        wordsContainer.appendChild(cursor);
+        
+        zenBaseTop = cursor.offsetTop;
+    } else {
+        document.body.classList.remove('zen-mode');
+        currentWords = generateWords();
+        renderWords();
+    }
     
     window.addEventListener('keydown', handleKeydown);
     
-    updateCursor();
+    if (!zenModeEnabled) updateCursor();
 
     if (isRestart && tearPaper) {
         gameArea.style.transition = 'none';
@@ -472,8 +483,84 @@ function updateCursor() {
 
 window.addEventListener('resize', updateCursor);
 
+let zenBaseTop = 0;
+
+function updateZenCursor() {
+    const cursor = wordsContainer.querySelector('.zen-cursor');
+    if (!cursor) return;
+
+    const currentTop = cursor.offsetTop;
+    
+    const targetTranslate = -(currentTop - zenBaseTop) + 100; 
+    
+    gameArea.style.transition = 'transform 0.1s cubic-bezier(0, 0.9, 0.15, 1)';
+    gameArea.style.transform = `translateY(${targetTranslate}px)`;
+}
+
+function handleZenInput(e) {
+    if (e.key === 'Tab') {
+        e.preventDefault();
+        initGame();
+        return;
+    }
+    
+    if (['Shift', 'Control', 'Alt', 'CapsLock', 'Meta'].includes(e.key)) return;
+
+    if (!isGameActive) {
+        isGameActive = true;
+        if (soundEnabled) initAudio();
+    }
+
+    const cursor = wordsContainer.querySelector('.zen-cursor');
+    if (!cursor) return;
+
+    if (e.key === 'Backspace') {
+        const prev = cursor.previousSibling;
+        if (prev) {
+            if (prev.nodeType === Node.TEXT_NODE) {
+                if (prev.textContent.length > 0) {
+                    prev.textContent = prev.textContent.slice(0, -1);
+                } 
+                if (prev.textContent.length === 0) prev.remove();
+            } else {
+                prev.remove();
+            }
+        }
+        updateZenCursor();
+        return;
+    }
+
+    if (e.key === 'Enter') {
+        e.preventDefault();
+        playSound('click');
+        const br = document.createElement('br');
+        wordsContainer.insertBefore(br, cursor);
+        updateZenCursor();
+        return;
+    }
+
+    if (e.key.length === 1) {
+        e.preventDefault();
+        playSound('click');
+        
+        const prev = cursor.previousSibling;
+        if (prev && prev.nodeType === Node.TEXT_NODE) {
+            prev.textContent += e.key;
+        } else {
+            const text = document.createTextNode(e.key);
+            wordsContainer.insertBefore(text, cursor);
+        }
+        updateZenCursor();
+    }
+}
+
 function handleKeydown(e) {
     if (currentView !== 'game') return;
+
+    if (zenModeEnabled) {
+        handleZenInput(e);
+        return;
+    }
 
     if (isGameFinished) {
         if (e.key === 'Tab' || e.key === 'Enter') {
@@ -714,6 +801,9 @@ settingsBtn.addEventListener('click', () => {
     document.querySelectorAll('[data-mode]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.mode === generationMode);
     });
+    document.querySelectorAll('[data-zen]').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.zen === (zenModeEnabled ? 'true' : 'false'));
+    });
     switchView('settings');
 });
 
@@ -748,6 +838,16 @@ document.querySelectorAll('[data-mode]').forEach(btn => {
         localStorage.setItem('mecano_generation_mode', generationMode);
         
         document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    });
+});
+
+document.querySelectorAll('[data-zen]').forEach(btn => {
+    btn.addEventListener('click', () => {
+        zenModeEnabled = btn.dataset.zen === 'true';
+        localStorage.setItem('mecano_zen_mode', zenModeEnabled);
+        
+        document.querySelectorAll('[data-zen]').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
     });
 });
