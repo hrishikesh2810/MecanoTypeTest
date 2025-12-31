@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -25,38 +25,38 @@
                     <div id="settings-sheet" class="sheet-content hidden">
                         <div class="settings-container">
                             <div class="setting-group">
-                                <label>Idioma:</label>
+                                <label>Language:</label>
                                 <div class="toggle-group">
-                                    <button class="toggle-btn active" data-lang="es">Español</button>
-                                    <button class="toggle-btn" data-lang="en">Inglés</button>
+                                    <button class="toggle-btn" data-lang="es">Spanish</button>
+                                    <button class="toggle-btn active" data-lang="en">English</button>
                                 </div>
                             </div>
                             <div class="setting-group">
-                                <label>Palabras:</label>
+                                <label>Words:</label>
                                 <div class="toggle-group">
                                     <button class="toggle-btn" data-count="10">10</button>
                                     <button class="toggle-btn active" data-count="25">25</button>
                                     <button class="toggle-btn" data-count="50">50</button>
                                     <button class="toggle-btn" data-count="100">100</button>
-                                    <button class="toggle-btn" data-count="infinite">Infinito</button>
+                                    <button class="toggle-btn" data-count="infinite">Infinite</button>
                                 </div>
                             </div>
                             <div class="setting-group">
-                                <label>Modo de Generación:</label>
+                                <label>Generation Mode:</label>
                                 <div class="toggle-group">
-                                    <button class="toggle-btn active" data-mode="random">Aleatorio</button>
-                                    <button class="toggle-btn" data-mode="learning">Aprendizaje</button>
+                                    <button class="toggle-btn active" data-mode="random">Random</button>
+                                    <button class="toggle-btn" data-mode="learning">Learning</button>
                                 </div>
                             </div>
                             <div class="setting-group">
-                                <button id="close-settings-btn" class="action-btn">Volver al Juego</button>
+                                <button id="close-settings-btn" class="action-btn">Back to Game</button>
                             </div>
                         </div>
                     </div>
 
                     <div id="stats-sheet" class="sheet-content hidden">
                         <div class="stats-filters">
-                            <button class="filter-btn active" data-filter="all">Todo</button>
+                            <button class="filter-btn active" data-filter="all">All</button>
                             <button class="filter-btn" data-filter="lowercase">a-z</button>
                             <button class="filter-btn" data-filter="uppercase">A-Z</button>
                             <button class="filter-btn" data-filter="accents">á-ü</button>
@@ -67,9 +67,9 @@
                             <table id="global-stats-table" class="global-stats-table">
                                 <thead>
                                     <tr>
-                                        <th class="sortable" data-sort="char">Letra <i class="fas fa-sort"></i></th>
+                                        <th class="sortable" data-sort="char">Key <i class="fas fa-sort"></i></th>
                                         <th class="sortable" data-sort="total">Total <i class="fas fa-sort"></i></th>
-                                        <th class="sortable" data-sort="errors">Fallos <i class="fas fa-sort"></i></th>
+                                        <th class="sortable" data-sort="errors">Errors <i class="fas fa-sort"></i></th>
                                         <th class="sortable" data-sort="rate">% Error <i class="fas fa-sort"></i></th>
                                     </tr>
                                 </thead>
@@ -78,8 +78,8 @@
                             </table>
                         </div>
                         <div class="sheet-footer">
-                            <button id="reset-stats-btn" class="danger-btn">Resetear Historial</button>
-                            <button id="close-stats-btn" class="action-btn">Volver al Juego</button>
+                            <button id="reset-stats-btn" class="danger-btn">Reset History</button>
+                            <button id="close-stats-btn" class="action-btn">Back to Game</button>
                         </div>
                     </div>
                 </div>
@@ -94,15 +94,15 @@
                 
                 <div class="controls-row">
                     <div class="keyboard-area">
-                        <button id="numbers-btn" class="mode-btn" title="Números" style="font-family: var(--font-typewriter); font-weight: bold;">123</button>
-                        <button id="uppercase-btn" class="mode-btn" title="Mayúsculas"><i class="fas fa-font"></i></button>
-                        <button id="symbols-btn" class="mode-btn" title="Símbolos"><i class="fas fa-at"></i></button>
-                        <button id="sudden-death-btn" class="mode-btn" title="Muerte Súbita"><i class="fas fa-skull"></i></button>
+                        <button id="numbers-btn" class="mode-btn" title="Numbers" style="font-family: var(--font-typewriter); font-weight: bold;">123</button>
+                        <button id="uppercase-btn" class="mode-btn" title="Uppercase"><i class="fas fa-font"></i></button>
+                        <button id="symbols-btn" class="mode-btn" title="Symbols"><i class="fas fa-at"></i></button>
+                        <button id="sudden-death-btn" class="mode-btn" title="Sudden Death"><i class="fas fa-skull"></i></button>
                     </div>
                     <div class="keyboard-area">
-                        <button id="sound-btn" class="mode-btn" title="Sonido"><i class="fas fa-volume-mute"></i></button>
-                        <button id="stats-btn" class="mode-btn" title="Estadísticas"><i class="fas fa-chart-bar"></i></button>
-                        <button id="settings-btn" class="mode-btn" title="Ajustes"><i class="fas fa-cog"></i></button>
+                        <button id="sound-btn" class="mode-btn" title="Sound"><i class="fas fa-volume-mute"></i></button>
+                        <button id="stats-btn" class="mode-btn" title="Statistics"><i class="fas fa-chart-bar"></i></button>
+                        <button id="settings-btn" class="mode-btn" title="Settings"><i class="fas fa-cog"></i></button>
                     </div>
                 </div>
             </div>
@@ -110,7 +110,7 @@
 
         <div id="stats" class="sticky-note hidden">
             <div class="pin"></div>
-            <h3>RESULTADOS</h3>
+            <h3>RESULTS</h3>
             <div class="stat-row">
                 <div class="stat">
                     <div class="val" id="wpm">0</div>
@@ -118,17 +118,17 @@
                 </div>
                 <div class="stat">
                     <div class="val" id="acc">0%</div>
-                    <div class="label">PRECISIÓN</div>
+                    <div class="label">ACCURACY</div>
                 </div>
             </div>
             <div class="stat-row">
                 <div class="stat">
                     <div class="val" id="errors">0</div>
-                    <div class="label">ERRORES</div>
+                    <div class="label">ERRORS</div>
                 </div>
             </div>
             <div class="stat wide">
-                <div class="label">Teclas débiles:</div>
+                <div class="label">Weak keys:</div>
                 <div class="val" id="weak-keys">-</div>
             </div>
         </div>
@@ -136,7 +136,7 @@
         <div id="restart-note" class="sticky-note hidden restart-note">
             <div class="pin"></div>
             <div id="restart-button" tabindex="0">
-                <i class="fas fa-redo"></i> REINICIAR
+                <i class="fas fa-redo"></i> RESTART
             </div>
         </div>
     </div>

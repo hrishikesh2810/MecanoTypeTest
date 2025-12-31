@@ -3,7 +3,7 @@ let wordsListEN = [];
 
 const storedCount = localStorage.getItem('mecano_word_count');
 let wordCount = (storedCount === 'infinite') ? 'infinite' : (parseInt(storedCount) || 25);
-let currentLanguage = localStorage.getItem('mecano_language') || 'es';
+let currentLanguage = localStorage.getItem('mecano_language') || 'en';
 let generationMode = localStorage.getItem('mecano_generation_mode') || 'random';
 
 const gameArea = document.getElementById('game-area');
@@ -73,7 +73,7 @@ async function loadWords() {
         console.error('Error loading words:', error);
         wordsListES = ["error", "loading", "words", "check", "console"];
         wordsListEN = ["error", "loading", "words", "check", "console"];
-        alert("Para cargar las palabras desde words.json, necesitas ejecutar este proyecto en un servidor local (debido a políticas de seguridad CORS). Si usas VS Code, instala la extensión 'Live Server' y haz clic en 'Go Live'.");
+        alert("To load words from words.json, you need to run this project on a local server (due to CORS security policies). If you use VS Code, install the 'Live Server' extension and click 'Go Live'.");
     }
 }
 
@@ -687,7 +687,7 @@ function finishGame() {
         .map(k => k[0])
         .join(' ');
         
-    weakKeysEl.textContent = sortedWeakKeys || "Ninguna";
+    weakKeysEl.textContent = sortedWeakKeys || "None";
 
     statsContainer.classList.remove('hidden');
     document.getElementById('restart-note').classList.remove('hidden');
@@ -894,7 +894,7 @@ function renderGlobalStatsTable() {
 
     if (entries.length === 0) {
         const row = document.createElement('tr');
-        row.innerHTML = `<td colspan="4">No hay datos todavía</td>`;
+        row.innerHTML = `<td colspan="4">No data yet</td>`;
         globalStatsTableBody.appendChild(row);
         return;
     }
