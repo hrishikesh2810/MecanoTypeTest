@@ -6,9 +6,37 @@ on:
 
 permissions:
   issues: write
+  pull-requests: write
 
 jobs:
   assign:
+    if: |
+      contains(github.event.comment.body, 'assign this issue to me') || 
+      contains(github.event.comment.body, '/assign')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/assign-me@v1
+      - name: Assign the user and reply
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const commenter = context.payload.comment.user.login;
+            
+            try {
+              // Assign the user
+              await github.rest.issues.addAssignees({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                assignees: [commenter]
+              });
+
+              // Reply to the user
+              await github.rest.issues.createComment({
+                issue_number: context.issue.number,
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                body: `Hecho @${commenter}! Este issue ahora está asignado a ti. ¡Gracias por contribuir! 🚀`
+              });
+            } catch (error) {
+              console.log(error);
+            }
