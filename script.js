@@ -1075,6 +1075,9 @@ document.querySelectorAll('[data-lang]').forEach(btn => {
         btn.classList.add('active');
 
         applyTranslations();
+        if (typeof initGame === 'function') {
+            initGame();
+        }
         if (currentView === 'stats') {
             renderGlobalStatsTable();
         }
