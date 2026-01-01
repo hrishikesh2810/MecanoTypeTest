@@ -145,7 +145,7 @@ const i18n = {
         "stats.filters.all": "Alle",
         "stats.filters.lowercase": "a-z",
         "stats.filters.uppercase": "A-Z",
-        "stats.filters.accents": "A­-AŹ",
+        "stats.filters.accents": "A-AŹ",
         "stats.filters.numbers": "0-9",
         "stats.filters.symbols": "#@!",
         "stats.headers.key": "Taste",
