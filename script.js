@@ -284,6 +284,21 @@ applyTranslations();
 document.querySelectorAll('[data-lang]').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === currentLanguage);
 });
+// initialize single zen button and attach toggle handler
+const zenBtn = document.getElementById('zen-btn');
+if (zenBtn) {
+    zenBtn.classList.toggle('active', !!zenModeEnabled);
+    zenBtn.dataset.zen = zenModeEnabled ? 'true' : 'false';
+    zenBtn.addEventListener('click', () => {
+        zenModeEnabled = !zenModeEnabled;
+        localStorage.setItem('mecano_zen_mode', zenModeEnabled);
+        zenBtn.classList.toggle('active', !!zenModeEnabled);
+        zenBtn.dataset.zen = zenModeEnabled ? 'true' : 'false';
+        if (currentView === 'game') initGame();
+        showZenPopup(zenBtn, zenModeEnabled);
+        zenBtn.blur();
+    });
+}
 
 loadWords().then(() => {
     initGame();
@@ -738,6 +753,50 @@ function updateCursor() {
     }
 }
 
+function showZenPopup(btn, enabled) {
+    const popup = document.createElement('div');
+    popup.className = 'zen-popup';
+    popup.textContent = `${t('settings.zenMode')} ${enabled ? t('settings.on') : t('settings.off')}`;
+    Object.assign(popup.style, {
+        position: 'absolute',
+        zIndex: 9999,
+        padding: '6px 10px',
+        background: 'rgba(0,0,0,0.85)',
+        color: '#fff',
+        borderRadius: '6px',
+        fontSize: '13px',
+        whiteSpace: 'nowrap',
+        opacity: '0',
+        transform: 'translateY(0)',
+        transition: 'opacity 0.18s ease, transform 0.18s ease',
+        pointerEvents: 'none'
+    });
+
+    document.body.appendChild(popup);
+
+    const rect = btn.getBoundingClientRect();
+
+    // initial placement (will be corrected after measuring)
+    popup.style.left = `${rect.left + rect.width / 2}px`;
+    popup.style.top = `${rect.top - 10}px`;
+
+    requestAnimationFrame(() => {
+        const r = btn.getBoundingClientRect();
+        const left = r.left + r.width / 2 - popup.offsetWidth / 2;
+        const top = r.top - popup.offsetHeight - 8;
+        popup.style.left = `${Math.max(8, left)}px`;
+        popup.style.top = `${Math.max(8, top)}px`;
+        popup.style.opacity = '1';
+        popup.style.transform = 'translateY(-4px)';
+    });
+
+    setTimeout(() => {
+        popup.style.opacity = '0';
+        popup.style.transform = 'translateY(0)';
+        setTimeout(() => popup.remove(), 200);
+    }, 1000);
+}
+
 window.addEventListener('resize', updateCursor);
 
 
@@ -1057,9 +1116,7 @@ settingsBtn.addEventListener('click', () => {
     document.querySelectorAll('[data-mode]').forEach(btn => {
         btn.classList.toggle('active', btn.dataset.mode === generationMode);
     });
-    document.querySelectorAll('[data-zen]').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.zen === (zenModeEnabled ? 'true' : 'false'));
-    });
+    if (zenBtn) zenBtn.classList.toggle('active', !!zenModeEnabled);
     
 document.querySelectorAll('[data-theme]').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.theme === currentTheme);
@@ -1110,15 +1167,7 @@ document.querySelectorAll('[data-mode]').forEach(btn => {
     });
 });
 
-document.querySelectorAll('[data-zen]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        zenModeEnabled = btn.dataset.zen === 'true';
-        localStorage.setItem('mecano_zen_mode', zenModeEnabled);
-        
-        document.querySelectorAll('[data-zen]').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-    });
-});
+// `zenBtn` click handler attached during initialization above; no-op here.
 
 const statsBtn = document.getElementById('stats-btn');
 const closeStatsBtn = document.getElementById('close-stats-btn');
