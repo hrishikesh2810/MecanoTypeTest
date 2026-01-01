@@ -83,8 +83,17 @@
     background: transparent;
     font-family: var(--font-vintage); 
     font-size: 1.4rem;
-    display: block;
+    display: flex;              /* Changed from block to flex */
+    align-items: center;        /* Added */
+    justify-content: center;    /* Added */
     width: 100%;
+    height: 100%;               /* Added - make it fill parent */
+    gap: 8px;                   /* Added - space between icon and text */
+}
+
+/* FIX: Ensure clicks on icon/text pass through to button */
+#restart-button * {
+    pointer-events: none;
 }
 
 #restart-button:hover,
