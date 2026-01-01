@@ -1,0 +1,200 @@
+.typewriter {
+    position: relative;
+    width: 990px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 10;
+    transform: scale(0.9);
+    transform-origin: bottom center;
+    margin-bottom: 0; 
+}
+
+.return-lever {
+    position: absolute;
+    top: 40px;
+    left: -60px;
+    width: 100px;
+    height: 15px;
+    background: #cfd8dc;
+    border: 2px solid #546e7a;
+    border-radius: 10px;
+    transform: rotate(-10deg);
+    z-index: 4;
+    transform-origin: right center;
+}
+
+.return-lever::after {
+    content: '';
+    position: absolute;
+    left: -5px;
+    top: -20px;
+    width: 30px;
+    height: 40px;
+    background: #eceff1;
+    border: 2px solid #546e7a;
+    border-radius: 5px;
+}
+
+.roller-section {
+    width: 935px;
+    height: 80px;
+    background: #37474f;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 15px;
+    z-index: 5;
+    position: relative;
+    border: 3px solid #263238;
+}
+
+.roller {
+    flex-grow: 1;
+    height: 100%;
+    background: #212121;
+    border-radius: 5px;
+    margin: 0 15px;
+    background-image: linear-gradient(to bottom, #212121 0%, #424242 20%, #212121 40%);
+}
+
+.knob {
+    width: 60px;
+    height: 60px;
+    background: #455a64;
+    border-radius: 50%;
+    border: 3px solid #263238;
+}
+
+.machine-body {
+    width: 990px;
+    height: 200px; 
+    background: var(--machine-color);
+    border-radius: 30px 30px 0 0;
+    padding: 20px;
+    z-index: 6;
+    margin-top: -30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    box-shadow: 
+        inset 0 10px 0 rgba(255,255,255,0.05),
+        0 -5px 20px rgba(0,0,0,0.3);
+    border: 4px solid #1a2429;
+    border-bottom: none; 
+}
+
+.typebars-semicircle {
+    width: 550px;
+    height: 80px;
+    background: #1a2429; 
+    border-radius: 0 0 100px 100px;
+    margin-top: 0;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+    border-top: none;
+    box-shadow: inset 0 5px 10px rgba(0,0,0,0.5);
+}
+
+.typebars-inner {
+    width: 100%;
+    height: 100%;
+    background-image: repeating-linear-gradient(
+        90deg,
+        transparent 0px,
+        transparent 10px,
+        #37474f 10px,
+        #37474f 12px
+    );
+    opacity: 0.5;
+}
+
+.brand-plate {
+    display: none;
+}
+
+.controls-row {
+    display: flex;
+    justify-content: center;
+    gap: 60px;
+    width: 100%;
+    padding: 20px;
+    margin-top: 20px;
+    position: relative;
+}
+
+.keyboard-area {
+    display: flex;
+    gap: 20px;
+}
+
+.mode-btn {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+    border: 3px solid #78909c; 
+    background: radial-gradient(circle at 30% 30%, #cfd8dc, #90a4ae);
+    color: #263238;
+    font-size: 1.1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    transition: all 0.15s cubic-bezier(0.4, 0.0, 0.2, 1);
+    outline: none;
+    box-shadow: 
+        inset 2px 2px 5px rgba(255,255,255,0.3),
+        inset -2px -2px 5px rgba(0,0,0,0.2),
+        0 6px 0 #546e7a,
+        0 12px 10px rgba(0,0,0,0.4);
+}
+
+.mode-btn:hover {
+    transform: translateY(1px);
+    box-shadow: 
+        inset 2px 2px 5px rgba(255,255,255,0.3),
+        inset -2px -2px 5px rgba(0,0,0,0.2),
+        0 5px 0 #546e7a,
+        0 10px 9px rgba(0,0,0,0.4);
+}
+
+.mode-btn:active {
+    transform: translateY(6px);
+    box-shadow: 
+        inset 2px 2px 10px rgba(0,0,0,0.3),
+        0 0 0 #546e7a,
+        0 2px 3px rgba(0,0,0,0.5);
+}
+
+.mode-btn.active {
+    background: radial-gradient(circle at 30% 30%, #ffca28, #f57f17);
+    color: #263238;
+    border-color: #ff6f00;
+    transform: translateY(6px);
+    box-shadow: 
+        inset 2px 2px 10px rgba(0,0,0,0.2),
+        0 0 0 #e65100,
+        0 2px 3px rgba(0,0,0,0.5);
+}
+
+.mode-btn.active:active {
+    transform: translateY(7px);
+    box-shadow: 
+        inset 2px 2px 15px rgba(0,0,0,0.3),
+        0 -1px 0 #e65100,
+        0 1px 2px rgba(0,0,0,0.5);
+}
+
+.game-info-display {
+    margin-top: 40px; 
+    color: #90a4ae;
+    font-size: 0.9rem;
+    display: flex;
+    gap: 20px;
+    font-family: var(--font-typewriter);
+}

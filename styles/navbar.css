@@ -1,0 +1,63 @@
+/* ===== NAVBAR ===== */
+.header {
+  width: 100%;
+  background-color: transparent;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1000;
+  height: 80px;
+}
+
+.nav-container {
+  max-width: 100%;
+  margin: 0;
+  padding: 20px 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logo {
+  color: var(--machine-color);
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  font-size: 22px;
+  letter-spacing: -0.5px;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  opacity: 0.9;
+  transition: opacity 0.3s;
+}
+
+.logo-img {
+  height: 32px;
+  width: auto;
+  filter: brightness(0) opacity(0.8);
+}
+
+.logo:hover {
+  opacity: 1;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+}
+
+.nav-links a {
+  color: var(--machine-color);
+  text-decoration: none;
+  font-size: 28px;
+  opacity: 0.8;
+  transition: all 0.3s ease;
+}
+
+.nav-links a:hover {
+  color: var(--accent-gold);
+  opacity: 1;
+  transform: scale(1.1);
+}
