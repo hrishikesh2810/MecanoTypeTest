@@ -444,7 +444,7 @@ function playSound(type) {
     }
 }
 
-function initGame(tearPaper = true) {
+function initGame(tearPaper = true, keepView = false) {
     const isRestart = wordsContainer.children.length > 0 || isGameFinished || currentView !== 'game';
 
     if (isRestart && tearPaper) {
@@ -477,7 +477,9 @@ function initGame(tearPaper = true) {
         }, 600);
     }
 
-    currentView = 'game';
+    if (!keepView) {
+        currentView = 'game';
+    }
     window.removeEventListener('keydown', handleKeydown);
 
     currentWordIndex = 0;
@@ -491,9 +493,12 @@ function initGame(tearPaper = true) {
     
     wordsContainer.innerHTML = '';
     wordsContainer.scrollTop = 0;
-    wordsContainer.classList.remove('hidden');
-    document.getElementById('settings-sheet').classList.add('hidden');
-    document.getElementById('stats-sheet').classList.add('hidden');
+    
+    if (!keepView) {
+        wordsContainer.classList.remove('hidden');
+        document.getElementById('settings-sheet').classList.add('hidden');
+        document.getElementById('stats-sheet').classList.add('hidden');
+    }
     
     statsContainer.classList.add('hidden');
     document.getElementById('restart-note').classList.add('hidden');
@@ -1076,7 +1081,7 @@ document.querySelectorAll('[data-lang]').forEach(btn => {
 
         applyTranslations();
         if (typeof initGame === 'function') {
-            initGame();
+            initGame(false, currentView !== 'game');
         }
         if (currentView === 'stats') {
             renderGlobalStatsTable();
