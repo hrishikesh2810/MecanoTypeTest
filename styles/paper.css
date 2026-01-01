@@ -1,0 +1,118 @@
+.paper-guide {
+    position: absolute;
+    bottom: 60px;
+    width: 825px;
+    height: 85vh;
+    z-index: 3; 
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.paper-sheet {
+    background: var(--paper-color);
+    width: 100%;
+    min-height: 100vh; 
+    height: auto; 
+    box-shadow: 0 0 20px rgba(0,0,0,0.1);
+    padding: 40px 40px;
+    padding-bottom: 50vh; 
+    font-family: var(--font-typewriter);
+    font-size: 1.65rem; 
+    line-height: 2.0;
+    color: #9e9e9e; 
+    overflow: hidden;
+    position: relative;
+    border: 1px solid #e0e0e0;
+}
+
+.words {
+    height: 100%;
+    outline: none;
+    white-space: pre-wrap;
+    word-break: break-word;
+    transition: transform 0.3s ease-out; 
+}
+
+.word {
+    margin: 0 15px 0 0; 
+    display: inline-block;
+}
+
+.letter {
+    position: relative;
+}
+
+.letter.correct {
+    color: var(--text-color); 
+    text-shadow: 0 0 1px rgba(0,0,0,0.2);
+}
+
+.letter.incorrect {
+    color: var(--error-color);
+    text-decoration: line-through;
+    opacity: 0.7;
+}
+
+.letter.extra {
+    text-decoration: none;
+    opacity: 1;
+}
+
+.letter.current::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 10%;
+    height: 80%;
+    width: 2px;
+    background-color: #000;
+    animation: blink 1s infinite;
+    opacity: 1;
+}
+
+.word.current-word-end .letter:last-child::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    top: 10%;
+    height: 80%;
+    width: 2px;
+    background-color: #000;
+    animation: blink 1s infinite;
+    opacity: 1;
+}
+
+.sheet-content {
+    width: 100%;
+    color: var(--text-color);
+    font-family: var(--font-typewriter);
+    padding-bottom: 100px;
+}
+
+.sheet-content h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    font-size: 2rem;
+    text-decoration: underline;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.sheet-footer {
+    margin-top: 50px;
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    padding-bottom: 50px;
+}
+
+.zen-cursor {
+    display: inline-block;
+    width: 2px;
+    height: 1em;
+    background-color: var(--text-color);
+    animation: blink 1s infinite;
+    vertical-align: middle;
+    margin-left: 1px;
+}

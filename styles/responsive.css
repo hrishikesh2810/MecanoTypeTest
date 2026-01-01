@@ -1,0 +1,131 @@
+@media screen and (max-width: 1200px) {
+    .typewriter {
+        transform: scale(0.85);
+    }
+}
+
+@media screen and (max-width: 992px) {
+    .typewriter {
+        transform: scale(0.7);
+    }
+    
+    .sticky-note {
+        transform: scale(0.8) rotate(2deg);
+        right: 20px;
+        top: 20px;
+    }
+    
+    .restart-note {
+        transform: scale(0.8) rotate(-3deg);
+        right: 20px;
+        top: 250px;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .typewriter {
+        transform: scale(0.55);
+        margin-bottom: 0;
+    }
+    
+    .desk {
+        padding-bottom: 0;
+        align-items: flex-end;
+    }
+    
+    .sticky-note {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        width: auto;
+        min-width: 120px;
+        padding: 10px;
+        transform: none;
+        font-size: 0.8rem;
+        z-index: 1000;
+        border-radius: 5px;
+    }
+    
+    .sticky-note .pin {
+        display: none;
+    }
+    
+    .sticky-note h3 {
+        font-size: 1rem;
+        margin-bottom: 5px;
+        padding-bottom: 2px;
+        border-bottom-width: 1px;
+    }
+    
+    .stat-row {
+        margin-bottom: 5px;
+    }
+    
+    .stat .val {
+        font-size: 1.1rem;
+    }
+    
+    .stat .label {
+        font-size: 0.6rem;
+    }
+    
+    .restart-note {
+        position: fixed;
+        top: 10px;
+        left: 10px;
+        right: auto;
+        width: auto;
+        height: auto;
+        padding: 8px 15px;
+        transform: none;
+        z-index: 1000;
+        border-radius: 5px;
+        box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .restart-note .pin {
+        display: none;
+    }
+    
+    #restart-button {
+        font-size: 1rem;
+    }
+    
+    .modal-content {
+        width: 90%;
+        margin: 30% auto;
+        padding: 20px;
+    }
+    
+    .controls-row {
+        gap: 20px;
+        padding: 10px;
+    }
+    
+    .mode-btn {
+        width: 45px;
+        height: 45px;
+        font-size: 0.9rem;
+    }
+}
+
+@media screen and (max-width: 576px) {
+    .typewriter {
+        transform: scale(0.42);
+    }
+}
+
+@media screen and (max-width: 400px) {
+    .typewriter {
+        transform: scale(0.36);
+    }
+}
+
+@media screen and (max-height: 600px) {
+    .typewriter {
+        transform: scale(0.45);
+    }
+    .desk {
+        padding-bottom: 0;
+    }
+}

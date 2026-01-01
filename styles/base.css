@@ -1,0 +1,48 @@
+@import url('https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Special+Elite&family=Inter:wght@400;700&display=swap');
+
+:root {
+    --bg-color: #8d6e63; 
+    --machine-color: #222;
+    --machine-shadow: #1a2429;
+    --paper-color: #fff9f0;
+    --text-color: #212121;
+    --ink-faded: #424242;
+    --error-color: #e53935;
+    --accent-gold: #ffb300;
+    --key-cap: #eceff1;
+    --key-stem: #546e7a;
+    --font-typewriter: 'Courier Prime', monospace;
+    --font-vintage: 'Special Elite', cursive;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg-color);
+    background-image: 
+        repeating-linear-gradient(90deg, transparent 0, transparent 50px, rgba(0,0,0,0.05) 50px, rgba(0,0,0,0.05) 52px),
+        linear-gradient(to bottom, #8d6e63, #6d4c41);
+    color: var(--text-color);
+    font-family: var(--font-vintage);
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    padding-bottom: 0;
+}
+
+.desk {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+.hidden {
+    display: none !important;
+}
