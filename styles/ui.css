@@ -83,8 +83,16 @@
     background: transparent;
     font-family: var(--font-vintage); 
     font-size: 1.4rem;
-    display: block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     width: 100%;
+    height: 100%;
+    gap: 8px;
+}
+
+#restart-button * {
+    pointer-events: none;
 }
 
 #restart-button:hover,
