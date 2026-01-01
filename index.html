@@ -19,7 +19,7 @@
     <nav class="nav">
       <ul class="nav-links">
         <li>
-          <a href="https://github.com/jorgegarcia33/MecanoTypeTest" target="_blank" title="GitHub Repository">
+          <a href="https://github.com/jorgegarcia33/MecanoTypeTest" target="_blank" title="GitHub Repository" data-i18n-title="nav.github">
             <i class="fa-brands fa-github"></i>
           </a>
         </li>
@@ -44,68 +44,68 @@
                     <div id="settings-sheet" class="sheet-content hidden">
                         <div class="settings-container">
                             <div class="setting-group">
-                                <label>Language:</label>
+                                <label data-i18n="settings.language">Language:</label>
                                 <div class="toggle-group">
-                                    <button class="toggle-btn" data-lang="es">Spanish</button>
-                                    <button class="toggle-btn" data-lang="de">German</button>
-                                    <button class="toggle-btn active" data-lang="en">English</button>
-                                    <button class="toggle-btn" data-lang="fr">French</button>
+                                    <button class="toggle-btn" data-lang="es" data-i18n="settings.lang.es">Spanish</button>
+                                    <button class="toggle-btn" data-lang="de" data-i18n="settings.lang.de">German</button>
+                                    <button class="toggle-btn active" data-lang="en" data-i18n="settings.lang.en">English</button>
+                                    <button class="toggle-btn" data-lang="fr" data-i18n="settings.lang.fr">French</button>
                                 </div>
                             </div>
                             <div class="setting-group">
-                                <label>Words:</label>
+                                <label data-i18n="settings.words">Words:</label>
                                 <div class="toggle-group">
                                     <button class="toggle-btn" data-count="10">10</button>
                                     <button class="toggle-btn active" data-count="25">25</button>
                                     <button class="toggle-btn" data-count="50">50</button>
                                     <button class="toggle-btn" data-count="100">100</button>
-                                    <button class="toggle-btn" data-count="infinite">Infinite</button>
+                                    <button class="toggle-btn" data-count="infinite" data-i18n="settings.infinite">Infinite</button>
                                 </div>
                             </div>
                             <div class="setting-group">
-                                <label>Generation Mode:</label>
+                                <label data-i18n="settings.generationMode">Generation Mode:</label>
                                 <div class="toggle-group">
-                                    <button class="toggle-btn active" data-mode="random">Random</button>
-                                    <button class="toggle-btn" data-mode="learning">Learning</button>
+                                    <button class="toggle-btn active" data-mode="random" data-i18n="settings.random">Random</button>
+                                    <button class="toggle-btn" data-mode="learning" data-i18n="settings.learning">Learning</button>
                                 </div>
                             </div>
                             <div class="setting-group">
-                                <label>Theme:</label>
+                                <label data-i18n="settings.theme">Theme:</label>
                                 <div class="toggle-group">
-                                    <button class="toggle-btn" data-theme="light">Light</button>
-                                    <button class="toggle-btn" data-theme="dark">Dark</button>
+                                    <button class="toggle-btn" data-theme="light" data-i18n="settings.light">Light</button>
+                                    <button class="toggle-btn" data-theme="dark" data-i18n="settings.dark">Dark</button>
                                 </div>
                             </div>
                             <div class="setting-group">
-                                <label>Zen Mode:</label>
+                                <label data-i18n="settings.zenMode">Zen Mode:</label>
                                 <div class="toggle-group">
-                                    <button class="toggle-btn active" data-zen="false">Off</button>
-                                    <button class="toggle-btn" data-zen="true">On</button>
+                                    <button class="toggle-btn active" data-zen="false" data-i18n="settings.off">Off</button>
+                                    <button class="toggle-btn" data-zen="true" data-i18n="settings.on">On</button>
                                 </div>
                             </div>
                             <div class="setting-group">
-                                <button id="close-settings-btn" class="action-btn">Back to Game</button>
+                                <button id="close-settings-btn" class="action-btn" data-i18n="actions.backToGame">Back to Game</button>
                             </div>
                         </div>
                     </div>
 
                     <div id="stats-sheet" class="sheet-content hidden">
                         <div class="stats-filters">
-                            <button class="filter-btn active" data-filter="all">All</button>
-                            <button class="filter-btn" data-filter="lowercase">a-z</button>
-                            <button class="filter-btn" data-filter="uppercase">A-Z</button>
-                            <button class="filter-btn" data-filter="accents">á-ü</button>
-                            <button class="filter-btn" data-filter="numbers">0-9</button>
-                            <button class="filter-btn" data-filter="symbols">#@!</button>
+                            <button class="filter-btn active" data-filter="all" data-i18n="stats.filters.all">All</button>
+                            <button class="filter-btn" data-filter="lowercase" data-i18n="stats.filters.lowercase">a-z</button>
+                            <button class="filter-btn" data-filter="uppercase" data-i18n="stats.filters.uppercase">A-Z</button>
+                            <button class="filter-btn" data-filter="accents" data-i18n="stats.filters.accents">á-ü</button>
+                            <button class="filter-btn" data-filter="numbers" data-i18n="stats.filters.numbers">0-9</button>
+                            <button class="filter-btn" data-filter="symbols" data-i18n="stats.filters.symbols">#@!</button>
                         </div>
                         <div class="table-container">
                             <table id="global-stats-table" class="global-stats-table">
                                 <thead>
                                     <tr>
-                                        <th class="sortable" data-sort="char">Key <i class="fas fa-sort"></i></th>
-                                        <th class="sortable" data-sort="total">Total <i class="fas fa-sort"></i></th>
-                                        <th class="sortable" data-sort="errors">Errors <i class="fas fa-sort"></i></th>
-                                        <th class="sortable" data-sort="rate">% Error <i class="fas fa-sort"></i></th>
+                                        <th class="sortable" data-sort="char"><span data-i18n="stats.headers.key">Key</span> <i class="fas fa-sort"></i></th>
+                                        <th class="sortable" data-sort="total"><span data-i18n="stats.headers.total">Total</span> <i class="fas fa-sort"></i></th>
+                                        <th class="sortable" data-sort="errors"><span data-i18n="stats.headers.errors">Errors</span> <i class="fas fa-sort"></i></th>
+                                        <th class="sortable" data-sort="rate"><span data-i18n="stats.headers.errorRate">% Error</span> <i class="fas fa-sort"></i></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -113,8 +113,8 @@
                             </table>
                         </div>
                         <div class="sheet-footer">
-                            <button id="reset-stats-btn" class="danger-btn">Reset History</button>
-                            <button id="close-stats-btn" class="action-btn">Back to Game</button>
+                            <button id="reset-stats-btn" class="danger-btn" data-i18n="actions.resetHistory">Reset History</button>
+                            <button id="close-stats-btn" class="action-btn" data-i18n="actions.backToGame">Back to Game</button>
                         </div>
                     </div>
                 </div>
@@ -129,15 +129,15 @@
                 
                 <div class="controls-row">
                     <div class="keyboard-area">
-                        <button id="numbers-btn" class="mode-btn numbers-button" title="Numbers">123</button>
-                        <button id="uppercase-btn" class="mode-btn" title="Uppercase"><i class="fas fa-font"></i></button>
-                        <button id="symbols-btn" class="mode-btn" title="Symbols"><i class="fas fa-at"></i></button>
-                        <button id="sudden-death-btn" class="mode-btn" title="Sudden Death"><i class="fas fa-skull"></i></button>
+                        <button id="numbers-btn" class="mode-btn numbers-button" title="Numbers" data-i18n-title="tooltips.numbers">123</button>
+                        <button id="uppercase-btn" class="mode-btn" title="Uppercase" data-i18n-title="tooltips.uppercase"><i class="fas fa-font"></i></button>
+                        <button id="symbols-btn" class="mode-btn" title="Symbols" data-i18n-title="tooltips.symbols"><i class="fas fa-at"></i></button>
+                        <button id="sudden-death-btn" class="mode-btn" title="Sudden Death" data-i18n-title="tooltips.suddenDeath"><i class="fas fa-skull"></i></button>
                     </div>
                     <div class="keyboard-area">
-                        <button id="sound-btn" class="mode-btn" title="Sound"><i class="fas fa-volume-mute"></i></button>
-                        <button id="stats-btn" class="mode-btn" title="Statistics"><i class="fas fa-chart-bar"></i></button>
-                        <button id="settings-btn" class="mode-btn" title="Settings"><i class="fas fa-cog"></i></button>
+                        <button id="sound-btn" class="mode-btn" title="Sound" data-i18n-title="tooltips.sound"><i class="fas fa-volume-mute"></i></button>
+                        <button id="stats-btn" class="mode-btn" title="Statistics" data-i18n-title="tooltips.statistics"><i class="fas fa-chart-bar"></i></button>
+                        <button id="settings-btn" class="mode-btn" title="Settings" data-i18n-title="tooltips.settings"><i class="fas fa-cog"></i></button>
                     </div>
                 </div>
             </div>
@@ -145,25 +145,25 @@
 
         <div id="stats" class="sticky-note hidden">
             <div class="pin"></div>
-            <h3>RESULTS</h3>
+            <h3 data-i18n="results.title">RESULTS</h3>
             <div class="stat-row">
                 <div class="stat">
                     <div class="val" id="wpm">0</div>
-                    <div class="label">WPM</div>
+                    <div class="label" data-i18n="results.wpm">WPM</div>
                 </div>
                 <div class="stat">
                     <div class="val" id="acc">0%</div>
-                    <div class="label">ACCURACY</div>
+                    <div class="label" data-i18n="results.accuracy">ACCURACY</div>
                 </div>
             </div>
             <div class="stat-row">
                 <div class="stat">
                     <div class="val" id="errors">0</div>
-                    <div class="label">ERRORS</div>
+                    <div class="label" data-i18n="results.errors">ERRORS</div>
                 </div>
             </div>
             <div class="stat wide">
-                <div class="label">Weak keys:</div>
+                <div class="label" data-i18n="results.weakKeys">Weak keys:</div>
                 <div class="val" id="weak-keys">-</div>
             </div>
         </div>
@@ -171,7 +171,7 @@
         <div id="restart-note" class="sticky-note hidden restart-note">
             <div class="pin"></div>
             <div id="restart-button" tabindex="0">
-                <i class="fas fa-redo"></i> RESTART
+                <i class="fas fa-redo"></i> <span data-i18n="actions.restart">RESTART</span>
             </div>
         </div>
     </div>
