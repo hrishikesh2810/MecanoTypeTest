@@ -97,7 +97,7 @@ const i18n = {
         "stats.filters.all": "Todos",
         "stats.filters.lowercase": "a-z",
         "stats.filters.uppercase": "A-Z",
-        "stats.filters.accents": "A­-AŹ",
+        "stats.filters.accents": "A-Ź",
         "stats.filters.numbers": "0-9",
         "stats.filters.symbols": "#@!",
         "stats.headers.key": "Tecla",
