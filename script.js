@@ -37,6 +37,7 @@ const i18n = {
         "tooltips.uppercase": "Uppercase",
         "tooltips.symbols": "Symbols",
         "tooltips.suddenDeath": "Sudden Death",
+        "tooltips.zenMode": "Zen Mode",
         "tooltips.sound": "Sound",
         "tooltips.statistics": "Statistics",
         "tooltips.settings": "Settings",
@@ -85,6 +86,7 @@ const i18n = {
         "tooltips.uppercase": "Mayúsculas",
         "tooltips.symbols": "Símbolos",
         "tooltips.suddenDeath": "Muerte súbita",
+        "tooltips.zenMode": "Modo zen",
         "tooltips.sound": "Sonido",
         "tooltips.statistics": "Estadísticas",
         "tooltips.settings": "Configuración",
@@ -133,6 +135,7 @@ const i18n = {
         "tooltips.uppercase": "Großbuchstaben",
         "tooltips.symbols": "Symbole",
         "tooltips.suddenDeath": "Plötzlicher Tod",
+        "tooltips.zenMode": "Zen-Modus",
         "tooltips.sound": "Ton",
         "tooltips.statistics": "Statistiken",
         "tooltips.settings": "Einstellungen",
@@ -181,6 +184,7 @@ const i18n = {
         "tooltips.uppercase": "Majuscules",
         "tooltips.symbols": "Symboles",
         "tooltips.suddenDeath": "Mort subite",
+        "tooltips.zenMode": "Mode zen",
         "tooltips.sound": "Son",
         "tooltips.statistics": "Statistiques",
         "tooltips.settings": "Paramètres",
@@ -284,20 +288,34 @@ applyTranslations();
 document.querySelectorAll('[data-lang]').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.lang === currentLanguage);
 });
-// initialize single zen button and attach toggle handler
 const zenBtn = document.getElementById('zen-btn');
 if (zenBtn) {
     zenBtn.classList.toggle('active', !!zenModeEnabled);
     zenBtn.dataset.zen = zenModeEnabled ? 'true' : 'false';
     zenBtn.addEventListener('click', () => {
         zenModeEnabled = !zenModeEnabled;
+        if (zenModeEnabled) {
+            numbersEnabled = false;
+            uppercaseEnabled = false;
+            symbolsEnabled = false;
+            suddenDeathEnabled = false;
+            numbersBtn.classList.remove('active');
+            uppercaseBtn.classList.remove('active');
+            symbolsBtn.classList.remove('active');
+            suddenDeathBtn.classList.remove('active');
+        }
         localStorage.setItem('mecano_zen_mode', zenModeEnabled);
         zenBtn.classList.toggle('active', !!zenModeEnabled);
         zenBtn.dataset.zen = zenModeEnabled ? 'true' : 'false';
+        zenBtn.setAttribute('aria-pressed', zenModeEnabled ? 'true' : 'false');
         if (currentView === 'game') initGame();
         showZenPopup(zenBtn, zenModeEnabled);
         zenBtn.blur();
     });
+}
+
+if (zenBtn) {
+    zenBtn.setAttribute('aria-pressed', zenModeEnabled ? 'true' : 'false');
 }
 
 loadWords().then(() => {
@@ -776,7 +794,6 @@ function showZenPopup(btn, enabled) {
 
     const rect = btn.getBoundingClientRect();
 
-    // initial placement (will be corrected after measuring)
     popup.style.left = `${rect.left + rect.width / 2}px`;
     popup.style.top = `${rect.top - 10}px`;
 
@@ -1167,7 +1184,6 @@ document.querySelectorAll('[data-mode]').forEach(btn => {
     });
 });
 
-// `zenBtn` click handler attached during initialization above; no-op here.
 
 const statsBtn = document.getElementById('stats-btn');
 const closeStatsBtn = document.getElementById('close-stats-btn');
@@ -1177,6 +1193,15 @@ const globalStatsTableBody = document.querySelector('#global-stats-table tbody')
 numbersBtn.addEventListener('click', () => {
     numbersEnabled = !numbersEnabled;
     numbersBtn.classList.toggle('active');
+    if (numbersEnabled && zenModeEnabled) {
+        zenModeEnabled = false;
+        if (zenBtn) {
+            zenBtn.classList.remove('active');
+            zenBtn.dataset.zen = 'false';
+            zenBtn.setAttribute('aria-pressed', 'false');
+            localStorage.setItem('mecano_zen_mode', false);
+        }
+    }
     if (currentView === 'game') initGame();
     numbersBtn.blur();
 });
@@ -1184,6 +1209,16 @@ numbersBtn.addEventListener('click', () => {
 uppercaseBtn.addEventListener('click', () => {
     uppercaseEnabled = !uppercaseEnabled;
     uppercaseBtn.classList.toggle('active');
+    // If enabling uppercase, disable zen mode
+    if (uppercaseEnabled && zenModeEnabled) {
+        zenModeEnabled = false;
+        if (zenBtn) {
+            zenBtn.classList.remove('active');
+            zenBtn.dataset.zen = 'false';
+            zenBtn.setAttribute('aria-pressed', 'false');
+            localStorage.setItem('mecano_zen_mode', false);
+        }
+    }
     if (currentView === 'game') initGame();
     uppercaseBtn.blur();
 });
@@ -1191,6 +1226,15 @@ uppercaseBtn.addEventListener('click', () => {
 symbolsBtn.addEventListener('click', () => {
     symbolsEnabled = !symbolsEnabled;
     symbolsBtn.classList.toggle('active');
+    if (symbolsEnabled && zenModeEnabled) {
+        zenModeEnabled = false;
+        if (zenBtn) {
+            zenBtn.classList.remove('active');
+            zenBtn.dataset.zen = 'false';
+            zenBtn.setAttribute('aria-pressed', 'false');
+            localStorage.setItem('mecano_zen_mode', false);
+        }
+    }
     if (currentView === 'game') initGame();
     symbolsBtn.blur();
 });
@@ -1205,6 +1249,15 @@ soundBtn.addEventListener('click', () => {
 suddenDeathBtn.addEventListener('click', () => {
     suddenDeathEnabled = !suddenDeathEnabled;
     suddenDeathBtn.classList.toggle('active');
+    if (suddenDeathEnabled && zenModeEnabled) {
+        zenModeEnabled = false;
+        if (zenBtn) {
+            zenBtn.classList.remove('active');
+            zenBtn.dataset.zen = 'false';
+            zenBtn.setAttribute('aria-pressed', 'false');
+            localStorage.setItem('mecano_zen_mode', false);
+        }
+    }
     if (currentView === 'game') initGame();
 });
 

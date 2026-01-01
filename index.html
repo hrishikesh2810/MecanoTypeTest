@@ -83,7 +83,6 @@
                                     <button class="toggle-btn" data-theme="dark" data-i18n="settings.dark">Dark</button>
                                 </div>
                             </div>
-                            <!-- Zen Mode moved to machine controls -->
                             <div class="setting-group">
                                 <button id="close-settings-btn" class="action-btn" data-i18n="actions.backToGame">Back to Game</button>
                             </div>
@@ -134,7 +133,9 @@
                         <button id="uppercase-btn" class="mode-btn" title="Uppercase" data-i18n-title="tooltips.uppercase"><i class="fas fa-font"></i></button>
                         <button id="symbols-btn" class="mode-btn" title="Symbols" data-i18n-title="tooltips.symbols"><i class="fas fa-at"></i></button>
                         <button id="sudden-death-btn" class="mode-btn" title="Sudden Death" data-i18n-title="tooltips.suddenDeath"><i class="fas fa-skull"></i></button>
-                        <button id="zen-btn" class="mode-btn" data-zen="false" title="Zen Mode">Zen Mode</button>
+                        <button id="zen-btn" class="mode-btn" data-zen="false" title="Zen Mode" data-i18n-title="tooltips.zenMode" data-i18n-aria="tooltips.zenMode" aria-pressed="false">
+                            <i class="fas fa-spa" aria-hidden="true"></i>
+                        </button>
                     </div>
                     <div class="keyboard-area">
                         <button id="sound-btn" class="mode-btn" title="Sound" data-i18n-title="tooltips.sound"><i class="fas fa-volume-mute"></i></button>
