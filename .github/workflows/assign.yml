@@ -35,7 +35,8 @@ jobs:
                 issue_number: context.issue.number,
                 owner: context.repo.owner,
                 repo: context.repo.repo,
-                body: `Hecho @${commenter}! Este issue ahora está asignado a ti. ¡Gracias por contribuir! 🚀`
+                body: `🎉 Thank you for your interest in contributing!\n\nThe issue has been assigned to @${commenter}`
+                
               });
             } catch (error) {
               console.log(error);
