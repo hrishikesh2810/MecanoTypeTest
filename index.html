@@ -48,6 +48,7 @@
                 <div id="game-area" class="paper-sheet">
                     <div id="words" class="words"></div>
                     
+                    
                     <div id="settings-sheet" class="sheet-content hidden">
                         <div class="settings-container">
                             <div class="setting-group">
@@ -59,7 +60,16 @@
                                     <button class="toggle-btn" data-lang="fr" data-i18n="settings.lang.fr">French</button>
                                 </div>
                             </div>
+                                
                             <div class="setting-group">
+                                <label data-i18n="settings.mode">Mode:</label>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn active" data-game-mode="words" data-i18n="settings.mode.words">Words</button>
+                                    <button class="toggle-btn" data-game-mode="time" data-i18n="settings.mode.time">Time</button>
+                                </div>
+                            </div>
+                        
+                            <div class="setting-group" id="setting-words-count">
                                 <label data-i18n="settings.words">Words:</label>
                                 <div class="toggle-group">
                                     <button class="toggle-btn" data-count="10">10</button>
@@ -69,6 +79,17 @@
                                     <button class="toggle-btn" data-count="infinite" data-i18n="settings.infinite">Infinite</button>
                                 </div>
                             </div>
+                        
+                            <div class="setting-group hidden" id="setting-time-limit">
+                                <label data-i18n="settings.time">Time (s):</label>
+                                <div class="toggle-group">
+                                    <button class="toggle-btn" data-time="15">15</button>
+                                    <button class="toggle-btn active" data-time="30">30</button>
+                                    <button class="toggle-btn" data-time="60">60</button>
+                                    <button class="toggle-btn" data-time="120">120</button>
+                                </div>
+                            </div>
+                        
                             <div class="setting-group">
                                 <label data-i18n="settings.generationMode">Generation Mode:</label>
                                 <div class="toggle-group">
@@ -76,6 +97,7 @@
                                     <button class="toggle-btn" data-mode="learning" data-i18n="settings.learning">Learning</button>
                                 </div>
                             </div>
+                        
                             <div class="setting-group">
                                 <label data-i18n="settings.theme">Theme:</label>
                                 <div class="toggle-group">
@@ -83,6 +105,7 @@
                                     <button class="toggle-btn" data-theme="dark" data-i18n="settings.dark">Dark</button>
                                 </div>
                             </div>
+                        
                             <div class="setting-group">
                                 <button id="close-settings-btn" class="action-btn" data-i18n="actions.backToGame">Back to Game</button>
                             </div>
@@ -176,6 +199,10 @@
             <div id="restart-button" tabindex="0">
                 <i class="fas fa-redo"></i> <span data-i18n="actions.restart">RESTART</span>
             </div>
+        </div>
+        <div id="timer-container" class="sticky-note hidden timer-note">
+            <div class="pin"></div>
+            <span id="timer-display">30</span>
         </div>
     </div>
 

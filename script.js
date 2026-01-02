@@ -9,6 +9,12 @@ let currentLanguage = localStorage.getItem('mecano_language') || 'en';
 let generationMode = localStorage.getItem('mecano_generation_mode') || 'random';
 let zenModeEnabled = localStorage.getItem('mecano_zen_mode') === 'true';
 let currentTheme = localStorage.getItem('mecano_theme') || 'light';
+let gameMode = localStorage.getItem('mecano_game_mode') || 'words';
+let timeLimit = parseInt(localStorage.getItem('mecano_time_limit')) || 30;
+let timerInterval = null;
+let timeLeft = timeLimit;
+const timerContainer = document.getElementById('timer-container');
+const timerDisplay = document.getElementById('timer-display');
 if (currentTheme === 'dark') document.body.classList.add('dark-mode');
 
 const i18n = {
@@ -19,6 +25,10 @@ const i18n = {
         "settings.lang.de": "German",
         "settings.lang.en": "English",
         "settings.lang.fr": "French",
+        "settings.mode": "Mode:",
+        "settings.mode.words": "Words",
+        "settings.mode.time": "Time",
+        "settings.time": "Time (s):",
         "settings.words": "Words:",
         "settings.infinite": "Infinite",
         "settings.generationMode": "Generation Mode:",
@@ -478,6 +488,14 @@ function playSound(type) {
 }
 
 function initGame(tearPaper = true, keepView = false) {
+    stopTimer();
+    if (gameMode === 'time') {
+        timeLeft = timeLimit;
+        timerDisplay.textContent = timeLeft;
+        timerContainer.classList.remove('hidden');
+    } else {
+        timerContainer.classList.add('hidden');
+    }
     const isRestart = wordsContainer.children.length > 0 || isGameFinished || currentView !== 'game';
 
     if (isRestart && tearPaper) {
@@ -582,6 +600,11 @@ function initGame(tearPaper = true, keepView = false) {
 
 function switchView(newView) {
     if (currentView === newView) return;
+    if (newView === 'game' && gameMode === 'time') {
+        timerContainer.classList.remove('hidden');
+    } else {
+        timerContainer.classList.add('hidden');
+    }
     
     playSound('tear');
     const oldPaper = gameArea.cloneNode(true);
@@ -647,7 +670,7 @@ function generateWords() {
         fr: wordsListFR
     };
     const list = wordsLists[currentLanguage];
-    const count = wordCount === 'infinite' ? 100 : wordCount;
+    const count = (wordCount === 'infinite' || gameMode === 'time') ? 100 : wordCount;
     
     let practiceWords = [];
 
@@ -841,6 +864,7 @@ function handleZenInput(e) {
     if (!isGameActive) {
         isGameActive = true;
         if (soundEnabled) initAudio();
+        if (gameMode === 'time') startTimer();
     }
 
     const cursor = wordsContainer.querySelector('.zen-cursor');
@@ -915,6 +939,7 @@ function handleKeydown(e) {
         document.body.classList.add('focus-mode');
         startTime = Date.now();
         if (soundEnabled) initAudio();
+        if (gameMode === 'time') startTimer();
     }
 
     const typebars = document.querySelector('.typebars-inner');
@@ -987,7 +1012,7 @@ function handleKeydown(e) {
             currentWordIndex++;
             currentLetterIndex = 0;
             
-            if (wordCount === 'infinite') {
+            if (wordCount === 'infinite' || gameMode === 'time') {
                 if (currentWords.length - currentWordIndex < 50) {
                     const newWords = generateWords();
                     currentWords = currentWords.concat(newWords);
@@ -1012,7 +1037,10 @@ function handleKeydown(e) {
 
             updateCursor();
         } else if (currentWordIndex === currentWords.length - 1) {
-            finishGame();
+            if (gameMode !== 'time') {
+                isGameFinished = true;
+                finishGame();
+            }
         }
         return;
     }
@@ -1452,3 +1480,74 @@ document.querySelectorAll('[data-theme]').forEach(btn => {
         playSound('click');
     });
 });
+
+
+document.querySelectorAll('[data-game-mode]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.gameMode === gameMode);
+
+    btn.addEventListener('click', () => {
+        gameMode = btn.dataset.gameMode;
+        localStorage.setItem('mecano_game_mode', gameMode);
+
+        document.querySelectorAll('[data-game-mode]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        updateSettingsVisibility();
+    });
+});
+
+document.querySelectorAll('[data-time]').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.time) === timeLimit);
+
+    btn.addEventListener('click', () => {
+        timeLimit = parseInt(btn.dataset.time);
+        localStorage.setItem('mecano_time_limit', timeLimit);
+
+        document.querySelectorAll('[data-time]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    });
+});
+
+function updateSettingsVisibility() {
+    const wordsSetting = document.getElementById('setting-words-count');
+    const timeSetting = document.getElementById('setting-time-limit');
+
+    if (gameMode === 'time') {
+        wordsSetting.classList.add('hidden');
+        timeSetting.classList.remove('hidden');
+    } else {
+        wordsSetting.classList.remove('hidden');
+        timeSetting.classList.add('hidden');
+    }
+}
+
+updateSettingsVisibility();
+
+function startTimer() {
+    clearInterval(timerInterval);
+    timeLeft = timeLimit;
+    updateTimerDisplay();
+
+    timerContainer.classList.remove('hidden');
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            finishGame();
+        } else if (timeLeft <= 5) {
+            timerDisplay.classList.add('danger');
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerDisplay.classList.remove('danger');
+}
+
+function updateTimerDisplay() {
+    timerDisplay.textContent = timeLeft;
+}

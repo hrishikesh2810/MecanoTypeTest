@@ -328,3 +328,44 @@ th.sortable.desc i::before {
   font-family: var(--font-typewriter);
   font-weight: bold;
 }
+
+.timer-note {
+    top: 70px;
+    left: 40px;
+    right: auto;
+    transform: rotate(-2deg);
+    z-index: 10;
+    width: 120px;
+    text-align: center;
+    font-size: 2.5rem;
+    font-family: 'Courier Prime', 'Courier New', monospace;
+    font-weight: bold;
+    background-color: var(--sticky-bg, #f4e87c);
+    color: var(--text-color, #333);
+}
+
+.timer-note.danger {
+    background-color: #ff7675;
+    color: white;
+    animation: shake 0.5s ease-in-out infinite;
+}
+
+@keyframes shake {
+
+    0%,
+    100% {
+        transform: rotate(-2deg) translateX(0);
+    }
+
+    25% {
+        transform: rotate(-2deg) translateX(-2px);
+    }
+
+    75% {
+        transform: rotate(-2deg) translateX(2px);
+    }
+}
+
+.setting-group.hidden {
+    display: none !important;
+}
