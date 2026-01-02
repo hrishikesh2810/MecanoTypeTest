@@ -622,9 +622,9 @@ function initGame(tearPaper = true, keepView = false) {
 
 function switchView(newView) {
     if (currentView === newView) return;
-    if (newView === 'game' && gameMode === 'time') {
-        timerContainer.classList.remove('hidden');
-    } else {
+    
+    // Update timer visibility only when leaving the game view.
+    if (currentView === 'game' && gameMode === 'time') {
         timerContainer.classList.add('hidden');
     }
     
