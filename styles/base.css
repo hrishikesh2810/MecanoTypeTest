@@ -46,3 +46,8 @@ body {
 .hidden {
     display: none !important;
 }
+
+:root {
+    --font-sans: 'Inter', sans-serif;
+}
+

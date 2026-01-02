@@ -47,6 +47,14 @@ const i18n = {
         "results.errors": "ERRORS",
         "results.weakKeys": "Weak keys:",
         "results.none": "None",
+        "stats.tabs.profile": "Profile",
+        "stats.tabs.keys": "Key Analysis",
+        "stats.profile.started": "Tests Started",
+        "stats.profile.completed": "Tests Completed",
+        "stats.profile.time": "Time Typing",
+        "stats.profile.records": "Personal Records (WPM)",
+        "stats.records.normal": "Normal",
+        "stats.records.all": "All",
         "stats.filters.all": "All",
         "stats.filters.lowercase": "a-z",
         "stats.filters.uppercase": "A-Z",
@@ -96,6 +104,14 @@ const i18n = {
         "results.errors": "ERRORES",
         "results.weakKeys": "Teclas débiles:",
         "results.none": "Ninguna",
+        "stats.tabs.profile": "Perfil",
+        "stats.tabs.keys": "Análisis de Teclas",
+        "stats.profile.started": "Tests Iniciados",
+        "stats.profile.completed": "Tests Completados",
+        "stats.profile.time": "Tiempo Escribiendo",
+        "stats.profile.records": "Récords Personales (WPM)",
+        "stats.records.normal": "Normal",
+        "stats.records.all": "Todo",
         "stats.filters.all": "Todos",
         "stats.filters.lowercase": "a-z",
         "stats.filters.uppercase": "A-Z",
@@ -255,6 +271,12 @@ let totalChars = 0;
 let errorCount = 0;
 let zenBaseTop = 0;
 let charStats = JSON.parse(localStorage.getItem('mecano_char_stats')) || {};
+let userStats = JSON.parse(localStorage.getItem('mecano_user_stats')) || {
+    started: 0,
+    completed: 0,
+    time: 0,
+    records: {}
+};
 let currentGameCharStats = {};
 
 let soundEnabled = true;
@@ -625,6 +647,7 @@ function switchView(newView) {
     } else if (newView === 'stats') {
         document.getElementById('stats-sheet').classList.remove('hidden');
         renderGlobalStatsTable();
+        renderUserStats();
     }
 
     settingsBtn.classList.toggle('active', newView === 'settings');
@@ -911,10 +934,16 @@ function handleKeydown(e) {
     }
 
     if (!isGameActive) {
+        const isStartKey = e.key.length === 1 || e.key === ' ';
+        if (!isStartKey) return;
+
         isGameActive = true;
         document.body.classList.add('focus-mode');
         startTime = Date.now();
         if (soundEnabled) initAudio();
+
+        userStats.started++;
+        saveUserStats();
     }
 
     const typebars = document.querySelector('.typebars-inner');
@@ -1095,6 +1124,21 @@ function finishGame() {
     
     const totalProcessed = correctChars + errorCount;
     const accuracy = totalProcessed > 0 ? Math.round((correctChars / totalProcessed) * 100) : 0;
+
+    userStats.completed++;
+    userStats.time += Math.round((endTime - startTime) / 1000);
+    
+    if (wordCount !== 'infinite') {
+        const count = wordCount;
+        if (!userStats.records[count] || typeof userStats.records[count] !== 'object' || !('wpm' in userStats.records[count])) {
+             userStats.records[count] = { wpm: 0, acc: 0 };
+        }
+        
+        if (netWPM > userStats.records[count].wpm) {
+            userStats.records[count] = { wpm: netWPM, acc: accuracy };
+        }
+    }
+    saveUserStats();
     
     wpmEl.textContent = Math.max(0, netWPM);
     accEl.textContent = accuracy + '%';
@@ -1283,7 +1327,7 @@ resetStatsBtn.addEventListener('click', () => {
 });
 
 let currentSort = { column: 'rate', direction: 'desc' };
-let currentFilter = 'all';
+let currentFilter = 'lowercase';
 
 document.querySelectorAll('.filter-btn').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1452,3 +1496,51 @@ document.querySelectorAll('[data-theme]').forEach(btn => {
         playSound('click');
     });
 });
+
+function saveUserStats() {
+    localStorage.setItem('mecano_user_stats', JSON.stringify(userStats));
+}
+
+function formatTime(seconds) {
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    return `${h.toString().padStart(2, '0')}:${m.toString().padStart(2, '0')}:${s.toString().padStart(2, '0')}`;
+}
+
+function renderUserStats() {
+    document.getElementById('profile-started').textContent = userStats.started;
+    document.getElementById('profile-completed').textContent = userStats.completed;
+    document.getElementById('profile-time').textContent = formatTime(userStats.time);
+
+    const counts = [10, 25, 50, 100];
+    
+    counts.forEach(count => {
+        const wpmEl = document.getElementById(`rec-${count}-wpm`);
+        const accEl = document.getElementById(`rec-${count}-acc`);
+        
+        if (wpmEl && accEl) {
+            const record = userStats.records[count];
+            
+            if (record && typeof record === 'object' && 'wpm' in record) {
+                wpmEl.textContent = record.wpm;
+                accEl.textContent = record.acc + '%';
+            } else {
+                wpmEl.textContent = '-';
+                accEl.textContent = '-';
+            }
+        }
+    });
+}
+
+document.querySelectorAll('.tab-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        
+        const tab = btn.dataset.tab;
+        document.getElementById('stats-profile').classList.toggle('hidden', tab !== 'profile');
+        document.getElementById('stats-keys').classList.toggle('hidden', tab !== 'keys');
+    });
+});
+
