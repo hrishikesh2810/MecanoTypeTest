@@ -9,6 +9,12 @@ let currentLanguage = localStorage.getItem('mecano_language') || 'en';
 let generationMode = localStorage.getItem('mecano_generation_mode') || 'random';
 let zenModeEnabled = localStorage.getItem('mecano_zen_mode') === 'true';
 let currentTheme = localStorage.getItem('mecano_theme') || 'light';
+let gameMode = localStorage.getItem('mecano_game_mode') || 'words';
+let timeLimit = parseInt(localStorage.getItem('mecano_time_limit')) || 30;
+let timerInterval = null;
+let timeLeft = timeLimit;
+const timerContainer = document.getElementById('timer-container');
+const timerDisplay = document.getElementById('timer-display');
 if (currentTheme === 'dark') document.body.classList.add('dark-mode');
 
 const i18n = {
@@ -19,6 +25,10 @@ const i18n = {
         "settings.lang.de": "German",
         "settings.lang.en": "English",
         "settings.lang.fr": "French",
+        "settings.mode": "Mode:",
+        "settings.mode.words": "Words",
+        "settings.mode.time": "Time",
+        "settings.time": "Time (s):",
         "settings.words": "Words:",
         "settings.infinite": "Infinite",
         "settings.generationMode": "Generation Mode:",
@@ -500,6 +510,14 @@ function playSound(type) {
 }
 
 function initGame(tearPaper = true, keepView = false) {
+    stopTimer();
+    if (gameMode === 'time') {
+        timeLeft = timeLimit;
+        timerDisplay.textContent = timeLeft;
+        timerContainer.classList.remove('hidden');
+    } else {
+        timerContainer.classList.add('hidden');
+    }
     const isRestart = wordsContainer.children.length > 0 || isGameFinished || currentView !== 'game';
 
     if (isRestart && tearPaper) {
@@ -605,6 +623,11 @@ function initGame(tearPaper = true, keepView = false) {
 function switchView(newView) {
     if (currentView === newView) return;
     
+    // Update timer visibility only when leaving the game view.
+    if (currentView === 'game' && gameMode === 'time') {
+        timerContainer.classList.add('hidden');
+    }
+    
     playSound('tear');
     const oldPaper = gameArea.cloneNode(true);
     oldPaper.id = 'old-paper';
@@ -670,7 +693,7 @@ function generateWords() {
         fr: wordsListFR
     };
     const list = wordsLists[currentLanguage];
-    const count = wordCount === 'infinite' ? 100 : wordCount;
+    const count = (wordCount === 'infinite' || gameMode === 'time') ? 100 : wordCount;
     
     let practiceWords = [];
 
@@ -761,15 +784,12 @@ function renderWords(append = false) {
 
 let typingTimeout;
 
-function updateCursor() {
+function updateCursor(instant = false) {
     if (zenModeEnabled) {
         updateZenCursor();
         return;
     }
-    if (zenModeEnabled) {
-        updateZenCursor();
-        return;
-    }
+    
     document.querySelectorAll('.letter').forEach(el => el.classList.remove('current'));
     document.querySelectorAll('.word').forEach(el => el.classList.remove('current-word-end'));
     
@@ -785,11 +805,20 @@ function updateCursor() {
             currentWordDiv.classList.add('current-word-end'); 
         }
 
-        const firstWordTop = wordDivs[0].offsetTop;
+        let firstWordTop = wordDivs[0].offsetTop;
+        const spacer = document.getElementById('word-spacer');
+        if (spacer) {
+            firstWordTop -= spacer.offsetHeight;
+        }
+
         const currentTop = currentWordDiv.offsetTop;
         const targetTranslate = -(currentTop - firstWordTop) + 100;
         
-        gameArea.style.transition = 'transform 0.1s cubic-bezier(0, 0.9, 0.15, 1)';
+        if (instant) {
+            gameArea.style.transition = 'none';
+        } else {
+            gameArea.style.transition = 'transform 0.1s cubic-bezier(0, 0.9, 0.15, 1)';
+        }
         gameArea.style.transform = `translateY(${targetTranslate}px)`;
     }
 }
@@ -864,6 +893,7 @@ function handleZenInput(e) {
     if (!isGameActive) {
         isGameActive = true;
         if (soundEnabled) initAudio();
+        if (gameMode === 'time') startTimer();
     }
 
     const cursor = wordsContainer.querySelector('.zen-cursor');
@@ -941,6 +971,7 @@ function handleKeydown(e) {
         document.body.classList.add('focus-mode');
         startTime = Date.now();
         if (soundEnabled) initAudio();
+        if (gameMode === 'time') startTimer();
 
         userStats.started++;
         saveUserStats();
@@ -1016,7 +1047,9 @@ function handleKeydown(e) {
             currentWordIndex++;
             currentLetterIndex = 0;
             
-            if (wordCount === 'infinite') {
+            let instantUpdate = false;
+
+            if (wordCount === 'infinite' || gameMode === 'time') {
                 if (currentWords.length - currentWordIndex < 50) {
                     const newWords = generateWords();
                     currentWords = currentWords.concat(newWords);
@@ -1025,23 +1058,58 @@ function handleKeydown(e) {
 
                 const bufferBehind = 80;
                 if (currentWordIndex > bufferBehind) {
-                    const wordsToRemove = currentWordIndex - bufferBehind;
+                    const wordDivs = wordsContainer.querySelectorAll('.word');
+                    let cutIndex = currentWordIndex - bufferBehind;
                     
-                    for (let i = 0; i < wordsToRemove; i++) {
-                        if (wordsContainer.firstChild) {
-                            wordsContainer.removeChild(wordsContainer.firstChild);
-                        }
+                    let safeCutIndex = -1;
+                    for (let i = cutIndex; i > Math.max(0, cutIndex - 20); i--) {
+                         const w1 = wordDivs[i];
+                         const w2 = wordDivs[i+1];
+                         if (w1 && w2 && w1.offsetTop < w2.offsetTop) {
+                             safeCutIndex = i;
+                             break;
+                         }
                     }
                     
-                    currentWords.splice(0, wordsToRemove);
-                    
-                    currentWordIndex -= wordsToRemove;
+                    if (safeCutIndex !== -1) {
+                        const firstKeptWord = wordDivs[safeCutIndex + 1];
+                        const wordsContainerTop = wordsContainer.offsetTop;
+                        const rawTop = firstKeptWord.offsetTop - wordsContainerTop;
+                        
+                        const style = window.getComputedStyle(wordsContainer);
+                        const lineHeight = parseFloat(style.lineHeight) || 1;
+                        const lines = Math.round(rawTop / lineHeight);
+                        const newSpacerHeight = lines * lineHeight;
+                        
+                        let spacer = document.getElementById('word-spacer');
+                        if (!spacer) {
+                            spacer = document.createElement('div');
+                            spacer.id = 'word-spacer';
+                            spacer.style.width = '100%';
+                            spacer.style.display = 'block';
+                            wordsContainer.insertBefore(spacer, wordsContainer.firstChild);
+                        }
+                        
+                        spacer.style.height = `${newSpacerHeight}px`;
+                        
+                        for (let i = 0; i <= safeCutIndex; i++) {
+                            wordDivs[i].remove();
+                        }
+                        
+                        const wordsToRemoveCount = safeCutIndex + 1;
+                        currentWords.splice(0, wordsToRemoveCount);
+                        currentWordIndex -= wordsToRemoveCount;
+                        instantUpdate = true;
+                    }
                 }
             }
 
-            updateCursor();
+            updateCursor(instantUpdate);
         } else if (currentWordIndex === currentWords.length - 1) {
-            finishGame();
+            if (gameMode !== 'time') {
+                isGameFinished = true;
+                finishGame();
+            }
         }
         return;
     }
@@ -1497,6 +1565,76 @@ document.querySelectorAll('[data-theme]').forEach(btn => {
     });
 });
 
+
+document.querySelectorAll('[data-game-mode]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.gameMode === gameMode);
+
+    btn.addEventListener('click', () => {
+        gameMode = btn.dataset.gameMode;
+        localStorage.setItem('mecano_game_mode', gameMode);
+
+        document.querySelectorAll('[data-game-mode]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+
+        updateSettingsVisibility();
+    });
+});
+
+document.querySelectorAll('[data-time]').forEach(btn => {
+    btn.classList.toggle('active', parseInt(btn.dataset.time) === timeLimit);
+
+    btn.addEventListener('click', () => {
+        timeLimit = parseInt(btn.dataset.time);
+        localStorage.setItem('mecano_time_limit', timeLimit);
+
+        document.querySelectorAll('[data-time]').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+    });
+});
+
+function updateSettingsVisibility() {
+    const wordsSetting = document.getElementById('setting-words-count');
+    const timeSetting = document.getElementById('setting-time-limit');
+
+    if (gameMode === 'time') {
+        wordsSetting.classList.add('hidden');
+        timeSetting.classList.remove('hidden');
+    } else {
+        wordsSetting.classList.remove('hidden');
+        timeSetting.classList.add('hidden');
+    }
+}
+
+updateSettingsVisibility();
+
+function startTimer() {
+    clearInterval(timerInterval);
+    timeLeft = timeLimit;
+    updateTimerDisplay();
+
+    timerContainer.classList.remove('hidden');
+
+    timerInterval = setInterval(() => {
+        timeLeft--;
+        updateTimerDisplay();
+
+        if (timeLeft <= 0) {
+            clearInterval(timerInterval);
+            finishGame();
+        } else if (timeLeft <= 5) {
+            timerContainer.classList.add('danger');
+        }
+    }, 1000);
+}
+
+function stopTimer() {
+    clearInterval(timerInterval);
+    timerContainer.classList.remove('danger');
+}
+
+function updateTimerDisplay() {
+    timerDisplay.textContent = timeLeft;
+}
 function saveUserStats() {
     localStorage.setItem('mecano_user_stats', JSON.stringify(userStats));
 }
