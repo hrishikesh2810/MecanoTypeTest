@@ -1582,14 +1582,14 @@ function startTimer() {
             clearInterval(timerInterval);
             finishGame();
         } else if (timeLeft <= 5) {
-            timerDisplay.classList.add('danger');
+            timerContainer.classList.add('danger');
         }
     }, 1000);
 }
 
 function stopTimer() {
     clearInterval(timerInterval);
-    timerDisplay.classList.remove('danger');
+    timerContainer.classList.remove('danger');
 }
 
 function updateTimerDisplay() {
