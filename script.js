@@ -784,15 +784,12 @@ function renderWords(append = false) {
 
 let typingTimeout;
 
-function updateCursor() {
+function updateCursor(instant = false) {
     if (zenModeEnabled) {
         updateZenCursor();
         return;
     }
-    if (zenModeEnabled) {
-        updateZenCursor();
-        return;
-    }
+    
     document.querySelectorAll('.letter').forEach(el => el.classList.remove('current'));
     document.querySelectorAll('.word').forEach(el => el.classList.remove('current-word-end'));
     
@@ -808,11 +805,20 @@ function updateCursor() {
             currentWordDiv.classList.add('current-word-end'); 
         }
 
-        const firstWordTop = wordDivs[0].offsetTop;
+        let firstWordTop = wordDivs[0].offsetTop;
+        const spacer = document.getElementById('word-spacer');
+        if (spacer) {
+            firstWordTop -= spacer.offsetHeight;
+        }
+
         const currentTop = currentWordDiv.offsetTop;
         const targetTranslate = -(currentTop - firstWordTop) + 100;
         
-        gameArea.style.transition = 'transform 0.1s cubic-bezier(0, 0.9, 0.15, 1)';
+        if (instant) {
+            gameArea.style.transition = 'none';
+        } else {
+            gameArea.style.transition = 'transform 0.1s cubic-bezier(0, 0.9, 0.15, 1)';
+        }
         gameArea.style.transform = `translateY(${targetTranslate}px)`;
     }
 }
@@ -1041,6 +1047,8 @@ function handleKeydown(e) {
             currentWordIndex++;
             currentLetterIndex = 0;
             
+            let instantUpdate = false;
+
             if (wordCount === 'infinite' || gameMode === 'time') {
                 if (currentWords.length - currentWordIndex < 50) {
                     const newWords = generateWords();
@@ -1050,21 +1058,53 @@ function handleKeydown(e) {
 
                 const bufferBehind = 80;
                 if (currentWordIndex > bufferBehind) {
-                    const wordsToRemove = currentWordIndex - bufferBehind;
+                    const wordDivs = wordsContainer.querySelectorAll('.word');
+                    let cutIndex = currentWordIndex - bufferBehind;
                     
-                    for (let i = 0; i < wordsToRemove; i++) {
-                        if (wordsContainer.firstChild) {
-                            wordsContainer.removeChild(wordsContainer.firstChild);
-                        }
+                    let safeCutIndex = -1;
+                    for (let i = cutIndex; i > Math.max(0, cutIndex - 20); i--) {
+                         const w1 = wordDivs[i];
+                         const w2 = wordDivs[i+1];
+                         if (w1 && w2 && w1.offsetTop < w2.offsetTop) {
+                             safeCutIndex = i;
+                             break;
+                         }
                     }
                     
-                    currentWords.splice(0, wordsToRemove);
-                    
-                    currentWordIndex -= wordsToRemove;
+                    if (safeCutIndex !== -1) {
+                        const firstKeptWord = wordDivs[safeCutIndex + 1];
+                        const wordsContainerTop = wordsContainer.offsetTop;
+                        const rawTop = firstKeptWord.offsetTop - wordsContainerTop;
+                        
+                        const style = window.getComputedStyle(wordsContainer);
+                        const lineHeight = parseFloat(style.lineHeight) || 1;
+                        const lines = Math.round(rawTop / lineHeight);
+                        const newSpacerHeight = lines * lineHeight;
+                        
+                        let spacer = document.getElementById('word-spacer');
+                        if (!spacer) {
+                            spacer = document.createElement('div');
+                            spacer.id = 'word-spacer';
+                            spacer.style.width = '100%';
+                            spacer.style.display = 'block';
+                            wordsContainer.insertBefore(spacer, wordsContainer.firstChild);
+                        }
+                        
+                        spacer.style.height = `${newSpacerHeight}px`;
+                        
+                        for (let i = 0; i <= safeCutIndex; i++) {
+                            wordDivs[i].remove();
+                        }
+                        
+                        const wordsToRemoveCount = safeCutIndex + 1;
+                        currentWords.splice(0, wordsToRemoveCount);
+                        currentWordIndex -= wordsToRemoveCount;
+                        instantUpdate = true;
+                    }
                 }
             }
 
-            updateCursor();
+            updateCursor(instantUpdate);
         } else if (currentWordIndex === currentWords.length - 1) {
             if (gameMode !== 'time') {
                 isGameFinished = true;
