@@ -59,3 +59,8 @@ Check the issues labeled `good first issue`.
 2. Create a new branch
 3. Make your changes
 4. Open a Pull Request
+
+> [!TIP]
+> This is **YOUR** tool. Issues and pull requests are welcome.
+
+MecanoTypeTest is kept intentionally small and readable, so contributions that preserve **simplicity** are especially appreciated.
