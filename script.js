@@ -1266,10 +1266,10 @@ document.querySelectorAll('[data-lang]').forEach(btn => {
         btn.classList.add('active');
 
         applyTranslations();
-        if (typeof initGame === 'function') {
-            initGame(false, currentView !== 'game');
+        if(currentView === 'game' && typeof initGame === 'function'){
+            initGame(false, false);
         }
-        if (currentView === 'stats') {
+        if(currentView === 'stats'){
             renderGlobalStatsTable();
         }
     });
