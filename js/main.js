@@ -1,10 +1,8 @@
-import { audio, initAudio, playSound } from './audio.js';
 import { config } from './config.js';
-import { data, i18n, applyTranslations, loadWords } from './data.js';
-import { game, initGame, generateWords, renderWords, updateCursor, updateZenCursor, handleZenInput, handleKeydown, finishGame, restartGame } from './game.js';
-import { stats, userStats, currentSort, saveUserStats, renderUserStats, renderGlobalStatsTable } from './stats.js';
-import { ui, timerContainer, timerDisplay, gameArea, wordsContainer, statsContainer, wpmEl, accEl, errorsEl, weakKeysEl, restartBtn, soundBtn, suddenDeathBtn, numbersBtn, uppercaseBtn, symbolsBtn, zenBtn, settingsBtn, closeSettingsBtn, statsBtn, closeStatsBtn, resetStatsBtn, globalStatsTableBody, mobileInput, updateTimerDisplay, updateSettingsVisibility, switchView, showZenPopup, toggleZenMode, toggleDarkMode, changeAudioIcon, toggleTheme, toggleMobile, initButtons, scrollPaper } from './ui.js';
-import { t, startTimer, stopTimer, formatTime} from './utils.js';
+import { data, applyTranslations, loadWords } from './data.js';
+import { initGame, updateCursor, restartGame } from './game.js';
+import { stats, currentSort, renderGlobalStatsTable } from './stats.js';
+import { ui, toggleZenMode, toggleDarkMode, changeAudioIcon, toggleTheme, toggleMobile, initButtons, scrollPaper } from './ui.js';
 
 toggleDarkMode();
 

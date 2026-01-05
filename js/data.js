@@ -1,9 +1,5 @@
-import { audio, initAudio, playSound } from './audio.js';
 import { config } from './config.js';
-import { game, initGame, generateWords, renderWords, updateCursor, updateZenCursor, handleZenInput, handleKeydown, finishGame } from './game.js';
-import { stats, userStats, currentSort, saveUserStats, renderUserStats, renderGlobalStatsTable } from './stats.js';
-import { ui, timerContainer, timerDisplay, gameArea, wordsContainer, statsContainer, wpmEl, accEl, errorsEl, weakKeysEl, restartBtn, soundBtn, suddenDeathBtn, numbersBtn, uppercaseBtn, symbolsBtn, zenBtn, settingsBtn, closeSettingsBtn, statsBtn, closeStatsBtn, resetStatsBtn, globalStatsTableBody, mobileInput, updateTimerDisplay, updateSettingsVisibility, switchView, showZenPopup } from './ui.js';
-import { t, startTimer, stopTimer, formatTime} from './utils.js';
+import { t } from './utils.js';
 
 const storedCount = localStorage.getItem('mecano_word_count');
 
