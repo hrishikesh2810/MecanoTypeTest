@@ -190,6 +190,18 @@ export function toggleDarkMode() {
     if (config.currentTheme === 'dark') document.body.classList.add('dark-mode');
 }
 
+export function updateThemeToggleIcon() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        const icon = themeToggle.querySelector('i');
+        if (config.currentTheme === 'dark') {
+            icon.className = 'fa-solid fa-sun';
+        } else {
+            icon.className = 'fa-solid fa-moon';
+        }
+    }
+}
+
 export function changeAudioIcon() {
     if (audio.soundEnabled) {
         soundBtn.classList.add('active');
@@ -198,6 +210,28 @@ export function changeAudioIcon() {
 }
 
 export function initializeSettingsEventListeners() {
+    const headerThemeToggle = document.getElementById('theme-toggle');
+    if (headerThemeToggle) {
+        headerThemeToggle.addEventListener('click', () => {
+            config.currentTheme = config.currentTheme === 'dark' ? 'light' : 'dark';
+            localStorage.setItem('mecano_theme', config.currentTheme);
+            
+            if (config.currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
+
+            updateThemeToggleIcon();
+            
+            document.querySelectorAll('[data-theme]').forEach(b => {
+                b.classList.toggle('active', b.dataset.theme === config.currentTheme);
+            });
+            
+            playSound('click');
+        });
+    }
+
     document.querySelectorAll('[data-theme]').forEach(btn => {
         btn.addEventListener('click', () => {
             config.currentTheme = btn.dataset.theme;
@@ -208,6 +242,8 @@ export function initializeSettingsEventListeners() {
             } else {
                 document.body.classList.remove('dark-mode');
             }
+
+            updateThemeToggleIcon();
 
             // Update UI buttons
             document.querySelectorAll('[data-theme]').forEach(b => b.classList.remove('active'));

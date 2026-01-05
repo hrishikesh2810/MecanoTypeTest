@@ -13,7 +13,8 @@ body.dark-mode .letter.correct { color: #fff; }
 
 /* Navbar Contrast in Dark Mode */
 body.dark-mode .logo,
-body.dark-mode .nav-links a {
+body.dark-mode .nav-links a,
+body.dark-mode .theme-toggle-btn {
     color: #ccc;
 }
 
