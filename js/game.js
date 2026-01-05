@@ -5,6 +5,8 @@ import { stats, userStats, saveUserStats } from './stats.js';
 import { ui, timerContainer, timerDisplay, gameArea, wordsContainer, statsContainer, wpmEl, accEl, errorsEl, weakKeysEl, restartBtn } from './ui.js';
 import { t, startTimer, stopTimer } from './utils.js';
 
+let currentGameCharStats = {};
+
 export const game = {
     timeLeft: config.timeLimit,
     currentWords: [],
@@ -92,15 +94,10 @@ export function initGame(tearPaper = true, keepView = false) {
     if (config.zenModeEnabled) {
         document.body.classList.add('zen-mode');
         game.currentWords = [];
-        game.currentWords = [];
         const cursor = document.createElement('span');
         cursor.className = 'zen-cursor';
         wordsContainer.appendChild(cursor);
         
-        // Ensure layout is updated before measuring
-        requestAnimationFrame(() => {
-            game.zenBaseTop = cursor.offsetTop;
-        });
         // Ensure layout is updated before measuring
         requestAnimationFrame(() => {
             game.zenBaseTop = cursor.offsetTop;
@@ -574,8 +571,6 @@ export function handleKeydown(e) {
     }
 }
 
-let currentGameCharStats = {};
-
 export function finishGame() {
     game.isGameFinished = true;
     document.body.classList.remove('focus-mode');
@@ -585,7 +580,6 @@ export function finishGame() {
     const endTime = Date.now();
     const timeInMinutes = (endTime - game.startTime) / 60000;
     
-    const grossWPM = Math.round((game.totalChars / 5) / timeInMinutes);
     const netWPM = Math.round(((game.totalChars - game.errorCount) / 5) / timeInMinutes);
     
     const totalProcessed = game.correctChars + game.errorCount;

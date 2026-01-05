@@ -2,17 +2,13 @@ import { config } from './config.js';
 import { data, applyTranslations, loadWords } from './data.js';
 import { initGame, updateCursor, restartGame } from './game.js';
 import { stats, currentSort, renderGlobalStatsTable } from './stats.js';
-import { ui, toggleZenMode, toggleDarkMode, changeAudioIcon, toggleTheme, toggleMobile, initButtons, scrollPaper } from './ui.js';
+import { ui, toggleZenMode, toggleDarkMode, changeAudioIcon, initializeSettingsEventListeners, toggleMobile, initButtons, scrollPaper } from './ui.js';
 
 toggleDarkMode();
 
 scrollPaper();
 
 applyTranslations();
-
-document.querySelectorAll('[data-lang]').forEach(btn => {
-    btn.classList.toggle('active', btn.dataset.lang === config.currentLanguage);
-});
 
 toggleZenMode();
 
@@ -91,4 +87,4 @@ restartGame();
 
 toggleMobile();
 
-toggleTheme(); 
+initializeSettingsEventListeners(); 

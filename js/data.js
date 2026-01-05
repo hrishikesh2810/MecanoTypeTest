@@ -82,7 +82,7 @@ export const i18n = {
         "settings.lang.fr": "Francés",
         "settings.words": "Palabras:",
         "settings.infinite": "Infinito",
-        "settings.config.generationMode": "Modo de generación:",
+        "settings.generationMode": "Modo de generación:",
         "settings.random": "Aleatorio",
         "settings.learning": "Aprendizaje",
         "settings.theme": "Tema:",

@@ -161,32 +161,28 @@ export function showZenPopup(btn, enabled) {
 
 export function toggleZenMode() {
     if (zenBtn) {
-    zenBtn.classList.toggle('active', !!config.zenModeEnabled);
-    zenBtn.dataset.zen = config.zenModeEnabled ? 'true' : 'false';
-    zenBtn.addEventListener('click', () => {
-        config.zenModeEnabled = !config.zenModeEnabled;
-        if (config.zenModeEnabled) {
-            config.numbersEnabled = false;
-            config.uppercaseEnabled = false;
-            config.symbolsEnabled = false;
-            config.suddenDeathEnabled = false;
-            numbersBtn.classList.remove('active');
-            uppercaseBtn.classList.remove('active');
-            symbolsBtn.classList.remove('active');
-            suddenDeathBtn.classList.remove('active');
-        }
-        localStorage.setItem('mecano_zen_mode', config.zenModeEnabled);
         zenBtn.classList.toggle('active', !!config.zenModeEnabled);
         zenBtn.dataset.zen = config.zenModeEnabled ? 'true' : 'false';
-        zenBtn.setAttribute('aria-pressed', config.zenModeEnabled ? 'true' : 'false');
-        if (ui.currentView === 'game') initGame();
-        showZenPopup(zenBtn, config.zenModeEnabled);
-        zenBtn.blur();
-    });
-    }
-
-    if (zenBtn) {
-    zenBtn.setAttribute('aria-pressed', config.zenModeEnabled ? 'true' : 'false');
+        zenBtn.addEventListener('click', () => {
+            config.zenModeEnabled = !config.zenModeEnabled;
+            if (config.zenModeEnabled) {
+                config.numbersEnabled = false;
+                config.uppercaseEnabled = false;
+                config.symbolsEnabled = false;
+                config.suddenDeathEnabled = false;
+                numbersBtn.classList.remove('active');
+                uppercaseBtn.classList.remove('active');
+                symbolsBtn.classList.remove('active');
+                suddenDeathBtn.classList.remove('active');
+            }
+            localStorage.setItem('mecano_zen_mode', config.zenModeEnabled);
+            zenBtn.classList.toggle('active', !!config.zenModeEnabled);
+            zenBtn.dataset.zen = config.zenModeEnabled ? 'true' : 'false';
+            zenBtn.setAttribute('aria-pressed', config.zenModeEnabled ? 'true' : 'false');
+            if (ui.currentView === 'game') initGame();
+            showZenPopup(zenBtn, config.zenModeEnabled);
+            zenBtn.blur();
+        });
     }
 }
 
@@ -201,24 +197,24 @@ export function changeAudioIcon() {
     }
 }
 
-export function toggleTheme() {
+export function initializeSettingsEventListeners() {
     document.querySelectorAll('[data-theme]').forEach(btn => {
-    btn.addEventListener('click', () => {
-        config.currentTheme = btn.dataset.theme;
-        localStorage.setItem('mecano_theme', config.currentTheme);
-        
-        if (config.currentTheme === 'dark') {
-            document.body.classList.add('dark-mode');
-        } else {
-            document.body.classList.remove('dark-mode');
-        }
+        btn.addEventListener('click', () => {
+            config.currentTheme = btn.dataset.theme;
+            localStorage.setItem('mecano_theme', config.currentTheme);
+            
+            if (config.currentTheme === 'dark') {
+                document.body.classList.add('dark-mode');
+            } else {
+                document.body.classList.remove('dark-mode');
+            }
 
-        // Update UI buttons
-        document.querySelectorAll('[data-theme]').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        playSound('click');
-    });
+            // Update UI buttons
+            document.querySelectorAll('[data-theme]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            playSound('click');
+        });
     });
 
     document.querySelectorAll('[data-game-mode]').forEach(btn => {
@@ -250,14 +246,14 @@ export function toggleTheme() {
     updateSettingsVisibility();
 
     document.querySelectorAll('.tab-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        
-        const tab = btn.dataset.tab;
-        document.getElementById('stats-profile').classList.toggle('hidden', tab !== 'profile');
-        document.getElementById('stats-keys').classList.toggle('hidden', tab !== 'keys');
-    });
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            
+            const tab = btn.dataset.tab;
+            document.getElementById('stats-profile').classList.toggle('hidden', tab !== 'profile');
+            document.getElementById('stats-keys').classList.toggle('hidden', tab !== 'keys');
+        });
     });
 }
 
@@ -318,9 +314,9 @@ export function initButtons() {
         });
         if (zenBtn) zenBtn.classList.toggle('active', !!config.zenModeEnabled);
         
-    document.querySelectorAll('[data-theme]').forEach(btn => {
-        btn.classList.toggle('active', btn.dataset.theme === config.currentTheme);
-    });
+        document.querySelectorAll('[data-theme]').forEach(btn => {
+            btn.classList.toggle('active', btn.dataset.theme === config.currentTheme);
+        });
         switchView('settings');
     });
 
