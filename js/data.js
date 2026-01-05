@@ -1,3 +1,10 @@
+import { audio, initAudio, playSound } from './audio.js';
+import { config } from './config.js';
+import { game, initGame, generateWords, renderWords, updateCursor, updateZenCursor, handleZenInput, handleKeydown, finishGame } from './game.js';
+import { stats, userStats, currentSort, saveUserStats, renderUserStats, renderGlobalStatsTable } from './stats.js';
+import { ui, timerContainer, timerDisplay, gameArea, wordsContainer, statsContainer, wpmEl, accEl, errorsEl, weakKeysEl, restartBtn, soundBtn, suddenDeathBtn, numbersBtn, uppercaseBtn, symbolsBtn, zenBtn, settingsBtn, closeSettingsBtn, statsBtn, closeStatsBtn, resetStatsBtn, globalStatsTableBody, mobileInput, updateTimerDisplay, updateSettingsVisibility, switchView, showZenPopup } from './ui.js';
+import { t, startTimer, stopTimer, formatTime} from './utils.js';
+
 const storedCount = localStorage.getItem('mecano_word_count');
 
 export const data = {
@@ -226,3 +233,37 @@ export const i18n = {
         "alerts.loadWords": "Pour charger les mots depuis words.json, vous devez exécuter ce projet sur un serveur local (en raison des politiques de sécurité CORS). Si vous utilisez VS Code, installez l'extension 'Live Server' et cliquez sur 'Go Live'."
     }
 };
+
+export function applyTranslations() {
+    document.documentElement.lang = config.currentLanguage;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.dataset.i18n);
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        el.setAttribute('title', t(el.dataset.i18nTitle));
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder));
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        el.setAttribute('aria-label', t(el.dataset.i18nAria));
+    });
+}
+
+export async function loadWords() {
+    try {
+        const response = await fetch('words.json');
+        const json = await response.json();
+        data.wordsListES = json.es || [];
+        data.wordsListEN = json.en || [];
+        data.wordsListDE = json.de || [];
+        data.wordsListFR = json.fr || [];
+    } catch (error) {
+        console.error('Error loading words:', error);
+        data.wordsListES = ["error", "loading", "words", "check", "console"];
+        data.wordsListEN = ["error", "loading", "words", "check", "console"];
+        data.wordsListDE = ["fehler", "laden", "wörter", "überprüfen", "konsole"];
+        data.wordsListFR = ["erreur", "chargement", "mots", "vérifier", "console"];
+        alert(t("alerts.loadWords"));
+    }
+}
