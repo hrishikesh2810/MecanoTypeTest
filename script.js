@@ -17,6 +17,19 @@ const timerContainer = document.getElementById('timer-container');
 const timerDisplay = document.getElementById('timer-display');
 if (currentTheme === 'dark') document.body.classList.add('dark-mode');
 
+function updateThemeToggleIcon() {
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        const icon = themeToggle.querySelector('i');
+        if (currentTheme === 'dark') {
+            icon.className = 'fa-solid fa-sun';
+        } else {
+            icon.className = 'fa-solid fa-moon';
+        }
+    }
+}
+updateThemeToggleIcon();
+
 const i18n = {
     en: {
         "nav.github": "GitHub Repository",
@@ -1546,6 +1559,28 @@ if (mobileInput) {
     });
 }
 // Theme Toggle Logic
+const headerThemeToggle = document.getElementById('theme-toggle');
+if (headerThemeToggle) {
+    headerThemeToggle.addEventListener('click', () => {
+        currentTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        localStorage.setItem('mecano_theme', currentTheme);
+        
+        if (currentTheme === 'dark') {
+            document.body.classList.add('dark-mode');
+        } else {
+            document.body.classList.remove('dark-mode');
+        }
+
+        updateThemeToggleIcon();
+        
+        document.querySelectorAll('[data-theme]').forEach(b => {
+            b.classList.toggle('active', b.dataset.theme === currentTheme);
+        });
+        
+        playSound('click');
+    });
+}
+
 document.querySelectorAll('[data-theme]').forEach(btn => {
     btn.addEventListener('click', () => {
         currentTheme = btn.dataset.theme;
@@ -1556,6 +1591,8 @@ document.querySelectorAll('[data-theme]').forEach(btn => {
         } else {
             document.body.classList.remove('dark-mode');
         }
+
+        updateThemeToggleIcon();
 
         // Update UI buttons
         document.querySelectorAll('[data-theme]').forEach(b => b.classList.remove('active'));
@@ -1682,18 +1719,3 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     });
 });
 
-const themeToggle = document.getElementById("theme-toggle");
-
-if (themeToggle) {
-  const savedTheme = localStorage.getItem("theme") || "light";
-  document.documentElement.setAttribute("data-theme", savedTheme);
-  themeToggle.textContent = savedTheme === "dark" ? "☀️" : "🌙";
-
-  themeToggle.addEventListener("click", () => {
-    const current = document.documentElement.getAttribute("data-theme");
-    const next = current === "dark" ? "light" : "dark";
-    document.documentElement.setAttribute("data-theme", next);
-    localStorage.setItem("theme", next);
-    themeToggle.textContent = next === "dark" ? "☀️" : "🌙";
-  });
-}

@@ -13,7 +13,8 @@ body.dark-mode .letter.correct { color: #fff; }
 
 /* Navbar Contrast in Dark Mode */
 body.dark-mode .logo,
-body.dark-mode .nav-links a {
+body.dark-mode .nav-links a,
+body.dark-mode .theme-toggle-btn {
     color: #ccc;
 }
 
@@ -104,20 +105,5 @@ body.dark-mode #restart-button {
 /* Zen Mode */
 body.zen-mode .words {
     color: var(--text-color);
-}
-
-:root[data-theme="light"] {
-  --bg-color: #ffffff;
-  --text-color: #111111;
-}
-
-:root[data-theme="dark"] {
-  --bg-color: #0f0f0f;
-  --text-color: #eaeaea;
-}
-
-body {
-  background-color: var(--bg-color);
-  color: var(--text-color);
 }
 
