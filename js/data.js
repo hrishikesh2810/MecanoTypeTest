@@ -1,0 +1,265 @@
+import { config } from './config.js';
+import { t } from './utils.js';
+
+const storedCount = localStorage.getItem('mecano_word_count');
+
+export const data = {
+    wordsListES: [],
+    wordsListEN: [],
+    wordsListDE: [],
+    wordsListFR: [],
+    wordCount: (storedCount === 'infinite') ? 'infinite' : (parseInt(storedCount) || 25),
+};
+
+export const i18n = {
+    en: {
+        "nav.github": "GitHub Repository",
+        "settings.language": "Language:",
+        "settings.lang.es": "Spanish",
+        "settings.lang.de": "German",
+        "settings.lang.en": "English",
+        "settings.lang.fr": "French",
+        "settings.mode": "Mode:",
+        "settings.mode.words": "Words",
+        "settings.mode.time": "Time",
+        "settings.time": "Time (s):",
+        "settings.words": "Words:",
+        "settings.infinite": "Infinite",
+        "settings.config.generationMode": "Generation Mode:",
+        "settings.random": "Random",
+        "settings.learning": "Learning",
+        "settings.theme": "Theme:",
+        "settings.light": "Light",
+        "settings.dark": "Dark",
+        "settings.zenMode": "Zen Mode:",
+        "settings.off": "Off",
+        "settings.on": "On",
+        "actions.backToGame": "Back to Game",
+        "actions.resetHistory": "Reset History",
+        "actions.restart": "RESTART",
+        "tooltips.numbers": "Numbers",
+        "tooltips.uppercase": "Uppercase",
+        "tooltips.symbols": "Symbols",
+        "tooltips.suddenDeath": "Sudden Death",
+        "tooltips.zenMode": "Zen Mode",
+        "tooltips.sound": "Sound",
+        "tooltips.statistics": "Statistics",
+        "tooltips.settings": "Settings",
+        "results.title": "RESULTS",
+        "results.wpm": "WPM",
+        "results.accuracy": "ACCURACY",
+        "results.errors": "ERRORS",
+        "results.weakKeys": "Weak keys:",
+        "results.none": "None",
+        "stats.tabs.profile": "Profile",
+        "stats.tabs.keys": "Key Analysis",
+        "stats.profile.started": "Tests Started",
+        "stats.profile.completed": "Tests Completed",
+        "stats.profile.time": "Time Typing",
+        "stats.profile.records": "Personal Records (WPM)",
+        "stats.records.normal": "Normal",
+        "stats.records.all": "All",
+        "stats.filters.all": "All",
+        "stats.filters.lowercase": "a-z",
+        "stats.filters.uppercase": "A-Z",
+        "stats.filters.accents": "A-AŹ",
+        "stats.filters.numbers": "0-9",
+        "stats.filters.symbols": "#@!",
+        "stats.headers.key": "Key",
+        "stats.headers.total": "Total",
+        "stats.headers.errors": "Errors",
+        "stats.headers.errorRate": "% Error",
+        "stats.noData": "No data yet",
+        "alerts.resetHistory": "Are you sure you want to reset all your learning history?",
+        "alerts.loadWords": "To load words from words.json, you need to run this project on a local server (due to CORS security policies). If you use VS Code, install the 'Live Server' extension and click 'Go Live'."
+    },
+    es: {
+        "nav.github": "Repositorio de GitHub",
+        "settings.language": "Idioma:",
+        "settings.lang.es": "Español",
+        "settings.lang.de": "Alemán",
+        "settings.lang.en": "Inglés",
+        "settings.lang.fr": "Francés",
+        "settings.words": "Palabras:",
+        "settings.infinite": "Infinito",
+        "settings.generationMode": "Modo de generación:",
+        "settings.random": "Aleatorio",
+        "settings.learning": "Aprendizaje",
+        "settings.theme": "Tema:",
+        "settings.light": "Claro",
+        "settings.dark": "Oscuro",
+        "settings.zenMode": "Modo zen:",
+        "settings.off": "Desactivado",
+        "settings.on": "Activado",
+        "actions.backToGame": "Volver al juego",
+        "actions.resetHistory": "Restablecer historial",
+        "actions.restart": "REINICIAR",
+        "tooltips.numbers": "Números",
+        "tooltips.uppercase": "Mayúsculas",
+        "tooltips.symbols": "Símbolos",
+        "tooltips.suddenDeath": "Muerte súbita",
+        "tooltips.zenMode": "Modo zen",
+        "tooltips.sound": "Sonido",
+        "tooltips.statistics": "Estadísticas",
+        "tooltips.settings": "Configuración",
+        "results.title": "RESULTADOS",
+        "results.wpm": "WPM",
+        "results.accuracy": "PRECISIÓN",
+        "results.errors": "ERRORES",
+        "results.weakKeys": "Teclas débiles:",
+        "results.none": "Ninguna",
+        "stats.tabs.profile": "Perfil",
+        "stats.tabs.keys": "Análisis de Teclas",
+        "stats.profile.started": "Tests Iniciados",
+        "stats.profile.completed": "Tests Completados",
+        "stats.profile.time": "Tiempo Escribiendo",
+        "stats.profile.records": "Récords Personales (WPM)",
+        "stats.records.normal": "Normal",
+        "stats.records.all": "Todo",
+        "stats.filters.all": "Todos",
+        "stats.filters.lowercase": "a-z",
+        "stats.filters.uppercase": "A-Z",
+        "stats.filters.accents": "A-Ź",
+        "stats.filters.numbers": "0-9",
+        "stats.filters.symbols": "#@!",
+        "stats.headers.key": "Tecla",
+        "stats.headers.total": "Total",
+        "stats.headers.errors": "Errores",
+        "stats.headers.errorRate": "% Error",
+        "stats.noData": "Sin datos",
+        "alerts.resetHistory": "¿Estás seguro de que quieres borrar todo tu historial de aprendizaje?",
+        "alerts.loadWords": "Para cargar las palabras desde words.json, debes ejecutar este proyecto en un servidor local (por políticas de seguridad CORS). Si usas VS Code, instala la extensión 'Live Server' y haz clic en 'Go Live'."
+    },
+    de: {
+        "nav.github": "GitHub-Repository",
+        "settings.language": "Sprache:",
+        "settings.lang.es": "Spanisch",
+        "settings.lang.de": "Deutsch",
+        "settings.lang.en": "Englisch",
+        "settings.lang.fr": "Französisch",
+        "settings.words": "Wörter:",
+        "settings.infinite": "Unendlich",
+        "settings.config.generationMode": "Generierungsmodus:",
+        "settings.random": "Zufällig",
+        "settings.learning": "Lernmodus",
+        "settings.theme": "Thema:",
+        "settings.light": "Hell",
+        "settings.dark": "Dunkel",
+        "settings.zenMode": "Zen-Modus:",
+        "settings.off": "Aus",
+        "settings.on": "An",
+        "actions.backToGame": "Zurück zum Spiel",
+        "actions.resetHistory": "Verlauf zurücksetzen",
+        "actions.restart": "NEUSTART",
+        "tooltips.numbers": "Zahlen",
+        "tooltips.uppercase": "Großbuchstaben",
+        "tooltips.symbols": "Symbole",
+        "tooltips.suddenDeath": "Plötzlicher Tod",
+        "tooltips.zenMode": "Zen-Modus",
+        "tooltips.sound": "Ton",
+        "tooltips.statistics": "Statistiken",
+        "tooltips.settings": "Einstellungen",
+        "results.title": "ERGEBNISSE",
+        "results.wpm": "WPM",
+        "results.accuracy": "GENAUIGKEIT",
+        "results.errors": "FEHLER",
+        "results.weakKeys": "Schwache Tasten:",
+        "results.none": "Keine",
+        "stats.filters.all": "Alle",
+        "stats.filters.lowercase": "a-z",
+        "stats.filters.uppercase": "A-Z",
+        "stats.filters.accents": "A-AŹ",
+        "stats.filters.numbers": "0-9",
+        "stats.filters.symbols": "#@!",
+        "stats.headers.key": "Taste",
+        "stats.headers.total": "Total",
+        "stats.headers.errors": "Fehler",
+        "stats.headers.errorRate": "% Fehler",
+        "stats.noData": "Noch keine Daten",
+        "alerts.resetHistory": "Möchtest du wirklich deinen gesamten Lernverlauf zurücksetzen?",
+        "alerts.loadWords": "Um Wörter aus words.json zu laden, musst du dieses Projekt auf einem lokalen Server ausführen (wegen CORS-Sicherheitsrichtlinien). Wenn du VS Code nutzt, installiere die Erweiterung 'Live Server' und klicke auf 'Go Live'."
+    },
+    fr: {
+        "nav.github": "Dépôt GitHub",
+        "settings.language": "Langue:",
+        "settings.lang.es": "Espagnol",
+        "settings.lang.de": "Allemand",
+        "settings.lang.en": "Anglais",
+        "settings.lang.fr": "Français",
+        "settings.words": "Mots:",
+        "settings.infinite": "Infini",
+        "settings.config.generationMode": "Mode de génération:",
+        "settings.random": "Aléatoire",
+        "settings.learning": "Apprentissage",
+        "settings.theme": "Thème:",
+        "settings.light": "Clair",
+        "settings.dark": "Sombre",
+        "settings.zenMode": "Mode zen:",
+        "settings.off": "Désactivé",
+        "settings.on": "Activé",
+        "actions.backToGame": "Retour au jeu",
+        "actions.resetHistory": "Réinitialiser l'historique",
+        "actions.restart": "RECOMMENCER",
+        "tooltips.numbers": "Nombres",
+        "tooltips.uppercase": "Majuscules",
+        "tooltips.symbols": "Symboles",
+        "tooltips.suddenDeath": "Mort subite",
+        "tooltips.zenMode": "Mode zen",
+        "tooltips.sound": "Son",
+        "tooltips.statistics": "Statistiques",
+        "tooltips.settings": "Paramètres",
+        "results.title": "RÉSULTATS",
+        "results.wpm": "WPM",
+        "results.accuracy": "PRÉCISION",
+        "results.errors": "ERREURS",
+        "results.weakKeys": "Touches faibles:",
+        "results.none": "Aucune",
+        "stats.filters.all": "Tous",
+        "stats.filters.lowercase": "a-z",
+        "stats.filters.uppercase": "A-Z",
+        "stats.filters.accents": "A-AŹ",
+        "stats.filters.numbers": "0-9",
+        "stats.filters.symbols": "#@!",
+        "stats.headers.key": "Touche",
+        "stats.headers.total": "Total",
+        "stats.headers.errors": "Erreurs",
+        "stats.headers.errorRate": "% Erreur",
+        "stats.noData": "Aucune donnée",
+        "alerts.resetHistory": "Voulez-vous vraiment réinitialiser tout votre historique d'apprentissage ?",
+        "alerts.loadWords": "Pour charger les mots depuis words.json, vous devez exécuter ce projet sur un serveur local (en raison des politiques de sécurité CORS). Si vous utilisez VS Code, installez l'extension 'Live Server' et cliquez sur 'Go Live'."
+    }
+};
+
+export function applyTranslations() {
+    document.documentElement.lang = config.currentLanguage;
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        el.textContent = t(el.dataset.i18n);
+    });
+    document.querySelectorAll('[data-i18n-title]').forEach(el => {
+        el.setAttribute('title', t(el.dataset.i18nTitle));
+    });
+    document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+        el.setAttribute('placeholder', t(el.dataset.i18nPlaceholder));
+    });
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        el.setAttribute('aria-label', t(el.dataset.i18nAria));
+    });
+}
+
+export async function loadWords() {
+    try {
+        const response = await fetch('words.json');
+        const json = await response.json();
+        data.wordsListES = json.es || [];
+        data.wordsListEN = json.en || [];
+        data.wordsListDE = json.de || [];
+        data.wordsListFR = json.fr || [];
+    } catch (error) {
+        console.error('Error loading words:', error);
+        data.wordsListES = ["error", "loading", "words", "check", "console"];
+        data.wordsListEN = ["error", "loading", "words", "check", "console"];
+        data.wordsListDE = ["fehler", "laden", "wörter", "überprüfen", "konsole"];
+        data.wordsListFR = ["erreur", "chargement", "mots", "vérifier", "console"];
+        alert(t("alerts.loadWords"));
+    }
+}
