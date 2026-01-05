@@ -624,3 +624,12 @@ export function finishGame() {
     
     restartBtn.focus();
 }
+
+export function restartGame() {
+    restartBtn.addEventListener('click', initGame);
+    restartBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            initGame();
+        }
+    });
+}
