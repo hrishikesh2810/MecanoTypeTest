@@ -207,7 +207,8 @@ export function generateWords() {
 export function renderWords(append = false) {
     if (!append) wordsContainer.innerHTML = '';
     
-    const startIndex = append ? game.currentWords.length - (data.wordCount === 'infinite' ? 100 : data.wordCount) : 0;
+    const count = (data.wordCount === 'infinite' || config.gameMode === 'time') ? 100 : data.wordCount;
+    const startIndex = append ? game.currentWords.length - count : 0;
 
     for (let i = startIndex; i < game.currentWords.length; i++) {
         const word = game.currentWords[i];

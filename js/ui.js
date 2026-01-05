@@ -1,8 +1,8 @@
 import { audio, initAudio, playSound } from './audio.js';
 import { config } from './config.js';
-import { data } from './data.js';
+import { data, applyTranslations } from './data.js';
 import { game, initGame, handleKeydown } from './game.js';
-import { stats, renderUserStats, renderGlobalStatsTable } from './stats.js';
+import { stats, renderUserStats, renderGlobalStatsTable, currentSort } from './stats.js';
 import { t } from './utils.js';
 
 export const ui = {
@@ -297,6 +297,67 @@ export function toggleMobile() {
 }
 
 export function initButtons() {
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            stats.currentFilter = btn.dataset.filter;
+            renderGlobalStatsTable();
+        });
+    });
+
+    document.querySelectorAll('#global-stats-table th.sortable').forEach(th => {
+        th.addEventListener('click', () => {
+            const column = th.dataset.sort;
+            if (currentSort.column === column) {
+                currentSort.direction = currentSort.direction === 'asc' ? 'desc' : 'asc';
+            } else {
+                currentSort.column = column;
+                currentSort.direction = 'desc';
+            }
+            renderGlobalStatsTable();
+        });
+    });
+
+    document.querySelectorAll('[data-lang]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            config.currentLanguage = btn.dataset.lang;
+            localStorage.setItem('mecano_language', config.currentLanguage);
+            
+            document.querySelectorAll('[data-lang]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            applyTranslations();
+            if(ui.currentView === 'game'){
+                initGame(false, false);
+            }
+            if(ui.currentView === 'stats'){
+                renderGlobalStatsTable();
+            }
+        });
+    });
+
+    document.querySelectorAll('[data-count]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const val = btn.dataset.count;
+            data.wordCount = val === 'infinite' ? 'infinite' : parseInt(val);
+            localStorage.setItem('mecano_word_count', data.wordCount);
+            
+            document.querySelectorAll('[data-count]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
+    document.querySelectorAll('[data-mode]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            config.generationMode = btn.dataset.mode;
+            localStorage.setItem('mecano_generation_mode', config.generationMode);
+            
+            document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        });
+    });
+
     settingsBtn.addEventListener('click', () => {
         if (ui.currentView === 'settings') {
             switchView('game');
