@@ -212,6 +212,18 @@ th.sortable.desc i::before {
     text-transform: uppercase;
 }
 
+.setting-group.inline-setting {
+    display: flex;
+    align-items: center;
+    justify-content:space-between;
+    gap: 20px;
+}
+
+.setting-group.inline-setting label {
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
 .toggle-group {
     display: flex;
     gap: 15px;
@@ -237,6 +249,45 @@ th.sortable.desc i::before {
 .toggle-btn.active {
     background: #263238;
     color: #fff;
+}
+
+.toggle-btn.active {
+    background: #263238;
+    color: #fff;
+}
+
+.dropdown-select {
+    padding: 10px 15px;
+    font-size: 1.1rem;
+    border: 2px solid #263238;
+    background: transparent;
+    color: #263238;
+    font-family: var(--font-typewriter);
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    max-width: 300px;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23263238' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 11px center;
+    background-size: 1.2em;
+    padding-right: 40px;
+}
+
+.dropdown-select:focus {
+    background: rgba(38, 50, 56, 0.05);
+}
+
+.dark-mode .dropdown-select {
+
+    color: #eee;
+    border-color: #eee;
+    background-color: #263238;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23eeeeee' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
 }
 
 .action-btn, .danger-btn {

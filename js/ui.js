@@ -355,42 +355,54 @@ export function initButtons() {
         });
     });
 
-    document.querySelectorAll('[data-lang]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            config.currentLanguage = btn.dataset.lang;
-            localStorage.setItem('mecano_language', config.currentLanguage);
-            
-            document.querySelectorAll('[data-lang]').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+    // Generic Dropdown Setting Handler
+    document.querySelectorAll('select[data-setting]').forEach(select => {
+        const settingProp = select.dataset.setting;
 
-            applyTranslations();
-            if(ui.currentView === 'game'){
+        select.addEventListener('change', (e) => {
+            let value = e.target.value;
+
+            // Handle numeric values
+            if (!isNaN(value) && settingProp !== 'currentLanguage') {
+                value = parseInt(value);
+            }
+
+            // Update Config/Data
+            if (settingProp === 'wordCount') {
+                data.wordCount = value;
+            } else {
+                config[settingProp] = value;
+            }
+
+            // Persistence: Convert camelCase to snake_case for localStorage
+            // Maintain backward compatibility with existing keys
+            const keyMap = {
+                currentLanguage: 'language',
+                currentTheme: 'theme'
+            };
+            const snakeProp = settingProp.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+            const storageKey = `mecano_${keyMap[settingProp] || snakeProp}`;
+            localStorage.setItem(storageKey, value);
+
+            // Side Effects
+            if (settingProp === 'currentLanguage') {
+                applyTranslations();
+                if (ui.currentView === 'stats') renderGlobalStatsTable();
+            }
+
+            if (settingProp === 'gameMode') {
+                updateSettingsVisibility();
+            }
+
+            if (settingProp === 'currentTheme') {
+                document.body.classList.toggle('dark-mode', value === 'dark');
+            }
+
+            if (ui.currentView === 'game') {
                 initGame(false, false);
             }
-            if(ui.currentView === 'stats'){
-                renderGlobalStatsTable();
-            }
-        });
-    });
 
-    document.querySelectorAll('[data-count]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            const val = btn.dataset.count;
-            data.wordCount = val === 'infinite' ? 'infinite' : parseInt(val);
-            localStorage.setItem('mecano_word_count', data.wordCount);
-            
-            document.querySelectorAll('[data-count]').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        });
-    });
-
-    document.querySelectorAll('[data-mode]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            config.generationMode = btn.dataset.mode;
-            localStorage.setItem('mecano_generation_mode', config.generationMode);
-            
-            document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
+            playSound('click');
         });
     });
 
@@ -399,21 +411,19 @@ export function initButtons() {
             switchView('game');
             return;
         }
-        document.querySelectorAll('[data-lang]').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.lang === config.currentLanguage);
+
+        // Sync all dropdowns with current config
+        document.querySelectorAll('select[data-setting]').forEach(select => {
+            const prop = select.dataset.setting;
+            select.value = (prop === 'wordCount') ? data.wordCount : config[prop];
         });
-        document.querySelectorAll('[data-count]').forEach(btn => {
-            const val = btn.dataset.count;
-            btn.classList.toggle('active', val == data.wordCount);
-        });
-        document.querySelectorAll('[data-mode]').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.mode === config.generationMode);
-        });
+
+        // Ensure visibility of mode-dependent settings is correct
+        updateSettingsVisibility();
+
+        // Sync remaining buttons
         if (zenBtn) zenBtn.classList.toggle('active', !!config.zenModeEnabled);
         
-        document.querySelectorAll('[data-theme]').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.theme === config.currentTheme);
-        });
         switchView('settings');
     });
 
