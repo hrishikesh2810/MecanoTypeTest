@@ -339,7 +339,13 @@ export function initButtons() {
             }
 
             // Persistence: Convert camelCase to snake_case for localStorage
-            const storageKey = `mecano_${settingProp.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`)}`;
+            // Maintain backward compatibility with existing keys
+            const keyMap = {
+                currentLanguage: 'language',
+                currentTheme: 'theme'
+            };
+            const snakeProp = settingProp.replace(/[A-Z]/g, letter => `_${letter.toLowerCase()}`);
+            const storageKey = `mecano_${keyMap[settingProp] || snakeProp}`;
             localStorage.setItem(storageKey, value);
 
             // Side Effects
@@ -364,16 +370,6 @@ export function initButtons() {
         });
     });
 
-    document.querySelectorAll('[data-mode]').forEach(btn => {
-        btn.addEventListener('click', () => {
-            config.generationMode = btn.dataset.mode;
-            localStorage.setItem('mecano_generation_mode', config.generationMode);
-            
-            document.querySelectorAll('[data-mode]').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        });
-    });
-
     settingsBtn.addEventListener('click', () => {
         if (ui.currentView === 'settings') {
             switchView('game');
@@ -386,15 +382,12 @@ export function initButtons() {
             select.value = (prop === 'wordCount') ? data.wordCount : config[prop];
         });
 
+        // Ensure visibility of mode-dependent settings is correct
+        updateSettingsVisibility();
+
         // Sync remaining buttons
-        document.querySelectorAll('[data-mode]').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.mode === config.generationMode);
-        });
         if (zenBtn) zenBtn.classList.toggle('active', !!config.zenModeEnabled);
         
-        document.querySelectorAll('[data-theme]').forEach(btn => {
-            btn.classList.toggle('active', btn.dataset.theme === config.currentTheme);
-        });
         switchView('settings');
     });
 
